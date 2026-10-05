@@ -13,9 +13,9 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E02b | Primer PR (#26) integrado con merge commit | `evidence/E02b_primer_pr_merge_2026-10-05_0057.png` | 2026-10-05 00:57 | 2c456f0 → 3a8a2d5 | PRO-02, CAL-08 |
 | E03 | Diagrama de arquitectura | | | | DOC-04 |
 | E04 | Ejecución de la CLI | | | | PRG-06 |
-| E05 | Salida de pytest | | | | PRG-04, CAL-05 |
+| E05 | Salida de pytest (5/5) y ruff limpio — T04 | `evidence/E05_pytest_ruff_T04_2026-10-05.png` | 2026-10-05 ~10:20 | 19d18b6 | PRG-04, CAL-05 |
 | E06 | Reporte de cobertura | | | | MET-P2 |
-| E07 | Complejidad (radon) | | | | MET-P1 |
+| E07 | Complejidad por función de QualityOps vs. `radon cc -s` (7/7 coinciden) | `evidence/E07_complejidad_vs_radon_T04_2026-10-05.png` | 2026-10-05 ~10:20 | 19d18b6 | MET-P1 |
 | E08 | GitHub Actions (verde y bloqueo corregido) | | | | PRG-01, PRG-03, CAL-07 |
 | E09 | Dashboard | | | | PRG-06 |
 | E10 | AI Advisor: entrada y salida | | | | PRG-02, MET-00 |
