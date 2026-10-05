@@ -1,0 +1,7 @@
+# Dependencias mínimas de QualityOps AI.
+# Las versiones se fijarán con las que realmente instale pip en el equipo de desarrollo (Sprint 0).
+pytest
+pytest-cov
+radon
+ruff
+streamlit
