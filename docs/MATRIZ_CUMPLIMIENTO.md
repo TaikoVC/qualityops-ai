@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-05 00:10 — Sprint 0: commits 76f14fb y 9823160 publicados; E01 registrada.
+> Última actualización: 2026-10-05 01:05 — Sprint 0 cerrado: tablero Kanban (E02) y primer PR #26 (3a8a2d5).
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -31,7 +31,7 @@
 | CAL-05 | Aseguramiento de calidad | Pruebas + lint + CI + revisión | E05, E08 | Pipeline verde en v1.0 | ⬜ |
 | CAL-06 | Idoneidad funcional y fiabilidad | Tabla ISO/IEC 25010:2023 con medidas ISO/IEC 25023 | — | Subcaracterísticas con valor real | ⬜ |
 | CAL-07 | Enfoque preventivo | Quality gate bloqueante | E08 | ≥ 1 bloqueo real y su corrección | ⬜ |
-| CAL-08 | Carácter sistemático | Kanban + DoD + trazabilidad | E02 | Requisito → issue → commit → evidencia | ⬜ |
+| CAL-08 | Carácter sistemático | Kanban + DoD + trazabilidad | E02, E02b | Requisito → issue → commit → evidencia | 🟨 |
 | MET-00 | Métricas aplicando IA | Cálculo determinista + IA interpreta/verifica | E10 | Interpretación coherente con valores | ⬜ |
 | MET-P1 | Complejidad ciclomática | Radon cc | E07 | Coincide con terminal | ⬜ |
 | MET-P2 | Cobertura | pytest-cov | E06 | Coincide con `coverage report` | ⬜ |
@@ -46,9 +46,9 @@
 | EST-2 | Estimación análoga | `estimation.py` | E12 | Referencia + factor de ajuste | ⬜ |
 | EST-3 | Tres puntos (PERT) | `estimation.py` | E12 | O, M, P, E y σ | ⬜ |
 | EST-4 | Puntos de función | `estimation.py` | E12 | Conteo, pesos, PF sin ajustar (y ajustados) | ⬜ |
-| PRO-01 | Kanban | GitHub Projects | E02 | Capturas por sprint | ⬜ |
-| PRO-02 | Commits por cambio | Git | E00c | Mensajes con ID de tarea | 🟨 |
+| PRO-01 | Kanban | GitHub Projects | E02 | Capturas por sprint | 🟨 |
+| PRO-02 | Commits por cambio | Git + PR con merge commit | E00c, E02b | Mensajes con ID de tarea | 🟨 |
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | — | E01–E14 con archivo y fecha | ⬜ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` | — | Entradas por sprint | 🟨 |
 
-**Grado de cumplimiento actual:** 0 / 44 (0 %) Cumple · 5 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 0 / 44 (0 %) Cumple · 9 en progreso. Nada se marca Cumple hasta tener evidencia.

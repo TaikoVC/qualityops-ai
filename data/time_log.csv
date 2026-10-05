@@ -1,6 +1,6 @@
 tarea,descripcion,modulo,requisitos,optimista_h,mas_probable_h,pesimista_h,sprint_planeado,issue,inicio,fin,real_h,sprint_real,pr,nota
 T01,"Repositorio, estructura, entorno y README",setup,PRG-05,0.25,0.5,1.0,S0,#1,2026-10-04 21:39,2026-10-04 23:02,0.69,S0,directo a main (76f14fb),"Bloque conjunto T01+T03 de 21:39 a 23:02 (1.38 h, incluye mover el repo fuera de System32); real repartido en proporción a la estimación (D11)"
-T02,Tablero Kanban (GitHub Projects) e issues,gestion,PRO-01;CAL-08,0.25,0.5,1.0,S0,,,,,,,
+T02,Tablero Kanban (GitHub Projects) e issues,gestion,PRO-01;CAL-08,0.25,0.5,1.0,S0,#2,2026-10-05 00:15,2026-10-05 00:57,0.70,S0,#26 (merge 3a8a2d5),
 T03,Estimación inicial y plantillas de datos,gestion,MET-J2;EST-1,0.25,0.5,1.0,S0,#3,2026-10-04 21:39,2026-10-04 23:02,0.69,S0,directo a main (76f14fb),"Bloque conjunto T01+T03 de 21:39 a 23:02 (1.38 h, incluye mover el repo fuera de System32); real repartido en proporción a la estimación (D11)"
 T04,Complejidad ciclomática y LOC (radon),product_metrics,MET-P1,0.5,1.0,2.0,S1A,,,,,,,
 T05,Cobertura de código (pytest-cov),product_metrics,MET-P2,0.5,0.75,1.5,S1A,,,,,,,
@@ -24,3 +24,4 @@ T22,Ejecución desde cero y etiqueta v1.0.0,ci,PRG-06,0.25,0.5,1.0,S3A,,,,,,,
 T23,QA final de la matriz,docs,Todos,0.5,1.0,2.0,S3C,,,,,,,
 T24,Guion de demo,docs,PRG-09,0.25,0.25,0.5,S3C,,,,,,,
 T25,(Opcional) Encuesta de satisfacción,gestion,MET-J3,0.25,0.5,1.0,S3C,,,,,,,
+T26,(Opcional) Demostración en un segundo repositorio Python,ci,PRG-08,0.25,0.5,1.0,S3A,,,,,,,"Agregada el 2026-10-05 después de la línea base (cambio de alcance, D13); no forma parte de la estimación inicial"

@@ -8,7 +8,9 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E00b | Instalación de dependencias con Python 3.14.3 y versiones resultantes | `evidence/E00b_pip_install_1_2026-10-04_2310.png`, `evidence/E00b_pip_install_2_2026-10-04_2310.png` | 2026-10-04 ~23:10 | — | PRG-06 |
 | E00c | Primer push y `git log` | `evidence/E00c_primer_push_2026-10-04_2302.png` | 2026-10-04 23:02 | 76f14fb | PRG-05, PRO-02 |
 | E01 | Repositorio GitHub con estructura, README y 1 contribuidor | `evidence/E01_repo_github_1_2026-10-05.png`, `evidence/E01_repo_github_2_readme_2026-10-05.png` | 2026-10-05 ~00:00 | 9823160 | PRG-05, DOC-08 |
-| E02 | Tablero Kanban | | | | PRO-01, CAL-08 |
+| E02 | Tablero Kanban con 25 issues (T01–T25), columnas y WIP = 2; tomado durante T02 | `evidence/E02_kanban_durante_T02_2026-10-05_0050.png` | 2026-10-05 ~00:50 | — | PRO-01, CAL-08 |
+| E02c | Tablero Kanban público, columnas ordenadas, T01–T03 en Done (cierre de S0); #2 cerrado 2026-10-05T06:55:23Z | `evidence/E02c_kanban_final_S0_2026-10-05_0110.png` | 2026-10-05 ~01:10 | 3a8a2d5 | PRO-01, CAL-08 |
+| E02b | Primer PR (#26) integrado con merge commit | `evidence/E02b_primer_pr_merge_2026-10-05_0057.png` | 2026-10-05 00:57 | 2c456f0 → 3a8a2d5 | PRO-02, CAL-08 |
 | E03 | Diagrama de arquitectura | | | | DOC-04 |
 | E04 | Ejecución de la CLI | | | | PRG-06 |
 | E05 | Salida de pytest | | | | PRG-04, CAL-05 |
