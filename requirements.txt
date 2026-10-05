@@ -1,7 +1,7 @@
 # Dependencias mínimas de QualityOps AI.
-# Las versiones se fijarán con las que realmente instale pip en el equipo de desarrollo (Sprint 0).
-pytest
-pytest-cov
-radon
-ruff
-streamlit
+# Versiones fijadas con las que instaló pip el 2026-10-04 en Windows con Python 3.14.3 (ver evidence/E00b).
+pytest==9.1.1
+pytest-cov==7.1.0
+radon==6.0.1
+ruff==0.16.10
+streamlit==1.65.0

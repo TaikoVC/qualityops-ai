@@ -5,6 +5,8 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | ID | Evidencia | Archivo | Fecha y hora | Commit / ejecución | Requisitos |
 |---|---|---|---|---|---|
 | E00 | Entorno inicial: versiones de Python y Git, `git init`, venv | `evidence/E00_entorno_2026-10-04_2139.png` | 2026-10-04 21:39 | — | PRG-05 |
+| E00b | Instalación de dependencias con Python 3.14.3 y versiones resultantes | `evidence/E00b_pip_install_1_2026-10-04_2310.png`, `evidence/E00b_pip_install_2_2026-10-04_2310.png` | 2026-10-04 ~23:10 | — | PRG-06 |
+| E00c | Primer push y `git log` | `evidence/E00c_primer_push_2026-10-04_2302.png` | 2026-10-04 23:02 | 76f14fb | PRG-05, PRO-02 |
 | E01 | Repositorio GitHub con estructura y README | | | | PRG-05, DOC-08 |
 | E02 | Tablero Kanban | | | | PRO-01, CAL-08 |
 | E03 | Diagrama de arquitectura | | | | DOC-04 |

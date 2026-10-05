@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-04 22:10 — Sprint 0 en curso.
+> Última actualización: 2026-10-04 23:15 — Sprint 0: primer commit 76f14fb publicado.
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -19,7 +19,7 @@
 | PRG-02 | IA en frameworks | `ai_advisor.py` + `AI_LOG.md` | E10 | Entrada y salida de IA visibles | ⬜ |
 | PRG-03 | Automatización | Pipeline lint→test→análisis→gate→informe | E08 | Pasos visibles en log | ⬜ |
 | PRG-04 | Validación de software | pytest + ruff | E05 | Pruebas verdes, ruff limpio | ⬜ |
-| PRG-05 | GitHub + repositorio | Repo + README + issues | E00, E01 | URL accesible, README reproducible | 🟨 |
+| PRG-05 | GitHub + repositorio | Repo + README + issues | E00, E00c, 76f14fb | URL accesible, README reproducible | 🟨 |
 | PRG-06 | Ejecución y salida | CLI + Streamlit | E04, E09 | Capturas reales | ⬜ |
 | PRG-07 | Métricas | Motor `qualityops/` | E05–E12 | Todas las MET calculadas | ⬜ |
 | PRG-08 | Proyecto DevOps justificado | Capítulo de justificación | — | Justificación + métricas reales del proyecto analizado | ⬜ |
@@ -40,14 +40,14 @@
 | MET-R2 | MTTR | promedio(fecha merge del PR − fecha fix) | E11 | Verificable con `git log --merges` | ⬜ |
 | MET-R3 | Eficacia de pruebas | críticos detectados antes de un tag / críticos totales (trailers `Severidad`, `Detectado-en`) | E11 | Fórmula probada | ⬜ |
 | MET-J1 | Eficacia de revisión | defectos con `Detectado-en: revision` / defectos con fase conocida | E11 | Fórmula probada | ⬜ |
-| MET-J2 | Desviación tiempo/esfuerzo + densidad por módulo | `data/time_log.csv` (estimado vs real por módulo) | — | Estimación con commit previo al código | 🟨 |
+| MET-J2 | Desviación tiempo/esfuerzo + densidad por módulo | `data/time_log.csv` (estimado vs real por módulo) | Estimación en commit 76f14fb (2026-10-04 23:02), antes de cualquier código | Estimación con commit previo al código | 🟨 |
 | MET-J3 | Plazos (+ satisfacción opcional) | Tablero / encuesta | — | % tareas en sprint planeado | ⬜ |
 | EST-1 | Juicio de expertos | `data/time_log.csv` (columna más probable) | E12 | Horas por tarea/módulo + justificación | 🟨 |
 | EST-2 | Estimación análoga | `estimation.py` | E12 | Referencia + factor de ajuste | ⬜ |
 | EST-3 | Tres puntos (PERT) | `estimation.py` | E12 | O, M, P, E y σ | ⬜ |
 | EST-4 | Puntos de función | `estimation.py` | E12 | Conteo, pesos, PF sin ajustar (y ajustados) | ⬜ |
 | PRO-01 | Kanban | GitHub Projects | E02 | Capturas por sprint | ⬜ |
-| PRO-02 | Commits por cambio | Git | E01 | Mensajes con ID de tarea | ⬜ |
+| PRO-02 | Commits por cambio | Git | E00c | Mensajes con ID de tarea | 🟨 |
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | — | E01–E14 con archivo y fecha | ⬜ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` | — | Entradas por sprint | 🟨 |
 
