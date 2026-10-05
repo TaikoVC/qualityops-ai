@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-04 23:15 — Sprint 0: primer commit 76f14fb publicado.
+> Última actualización: 2026-10-05 00:10 — Sprint 0: commits 76f14fb y 9823160 publicados; E01 registrada.
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -13,13 +13,13 @@
 | DOC-05 | Conclusión | Reporte | — | Resultados reales, límites, siguientes pasos | ⬜ |
 | DOC-06 | ≥ 10 hojas con tablas e imágenes | Reporte 15–18 pág. | E13 | ≥ 10 pág. de contenido, ≥ 8 tablas | ⬜ |
 | DOC-07 | Plantilla UTCJ + referencias | `PlantillaInvestigacion.docx` | — | Formato respetado; referencias APA | ⬜ |
-| DOC-08 | Trabajo individual | Repo personal | E01 | Un solo autor en `git shortlog -s` | ⬜ |
+| DOC-08 | Trabajo individual | Repo personal | E01 (1 contribuidor) | Un solo autor en `git shortlog -s` | 🟨 |
 | DOC-09 | Normas aplicadas, claras y puntuales | `docs/NORMAS.md`: norma → qué establece → cómo se aplicó → evidencia | — | Cada norma citada tiene aplicación y evidencia; versiones vigentes | 🟨 |
 | PRG-01 | Tecnologías DevOps | GitHub Actions + quality gates | E08 | Workflow en cada push | ⬜ |
 | PRG-02 | IA en frameworks | `ai_advisor.py` + `AI_LOG.md` | E10 | Entrada y salida de IA visibles | ⬜ |
 | PRG-03 | Automatización | Pipeline lint→test→análisis→gate→informe | E08 | Pasos visibles en log | ⬜ |
 | PRG-04 | Validación de software | pytest + ruff | E05 | Pruebas verdes, ruff limpio | ⬜ |
-| PRG-05 | GitHub + repositorio | Repo + README + issues | E00, E00c, 76f14fb | URL accesible, README reproducible | 🟨 |
+| PRG-05 | GitHub + repositorio | Repo + README + issues | E00, E00c, E01, 9823160 | URL accesible, README reproducible | 🟨 (falta sección Uso del README) |
 | PRG-06 | Ejecución y salida | CLI + Streamlit | E04, E09 | Capturas reales | ⬜ |
 | PRG-07 | Métricas | Motor `qualityops/` | E05–E12 | Todas las MET calculadas | ⬜ |
 | PRG-08 | Proyecto DevOps justificado | Capítulo de justificación | — | Justificación + métricas reales del proyecto analizado | ⬜ |
