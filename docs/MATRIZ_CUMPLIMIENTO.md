@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-05 10:50 — T05 integrado (PR #29, c7edea1).
+> Última actualización: 2026-10-05 21:30 — T06 integrado (PR #30, 38ea0c8): minería SZZ lista; aún 0 defectos reales.
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -35,11 +35,11 @@
 | MET-00 | Métricas aplicando IA | Cálculo determinista + IA interpreta/verifica | E10 | Interpretación coherente con valores | ⬜ |
 | MET-P1 | Complejidad ciclomática | `qualityops/product_metrics.py` (radon, por función; promedio, mediana, máximo, CC ≤ 10) | E07, 19d18b6, PR #28 | Coincide con `radon cc -s` por función | ✅ |
 | MET-P2 | Cobertura | `qualityops/coverage_metrics.py` (pytest-cov, global y por archivo, solo código de producto) | E06, 6ad52ac, PR #29 | Coincide con `coverage report` | ✅ |
-| MET-P3 | Densidad de defectos | commits `fix:` (minería SZZ) / KLOC (radon) | E11 | Fórmula probada | ⬜ |
-| MET-R1 | MTTD | promedio(fecha fix − fecha commit inductor SZZ) | E11 | Verificable con `git log`/`git blame` | ⬜ |
-| MET-R2 | MTTR | promedio(fecha merge del PR − fecha fix) | E11 | Verificable con `git log --merges` | ⬜ |
-| MET-R3 | Eficacia de pruebas | críticos detectados antes de un tag / críticos totales (trailers `Severidad`, `Detectado-en`) | E11 | Fórmula probada | ⬜ |
-| MET-J1 | Eficacia de revisión | defectos con `Detectado-en: revision` / defectos con fase conocida | E11 | Fórmula probada | ⬜ |
+| MET-P3 | Densidad de defectos | commits `fix:` (minería SZZ) / KLOC (radon) | E11 (minería lista, n = 0) | Fórmula probada | 🟨 |
+| MET-R1 | MTTD | promedio(fecha fix − fecha commit inductor SZZ) | E11 (minería lista, n = 0) | Verificable con `git log`/`git blame` | 🟨 |
+| MET-R2 | MTTR | promedio(fecha merge del PR − fecha fix) | E11 (minería lista, n = 0) | Verificable con `git log --merges` | 🟨 |
+| MET-R3 | Eficacia de pruebas | críticos detectados antes de un tag / críticos totales (trailers `Severidad`, `Detectado-en`) | E11 (minería lista, n = 0) | Fórmula probada | 🟨 |
+| MET-J1 | Eficacia de revisión | defectos con `Detectado-en: revision` / defectos con fase conocida | E11 (minería lista, n = 0) | Fórmula probada | 🟨 |
 | MET-J2 | Desviación tiempo/esfuerzo + densidad por módulo | `data/time_log.csv` (estimado vs real por módulo) | Estimación en commit 76f14fb (2026-10-04 23:02), antes de cualquier código | Estimación con commit previo al código | 🟨 |
 | MET-J3 | Plazos (+ satisfacción opcional) | Tablero / encuesta | — | % tareas en sprint planeado | ⬜ |
 | EST-1 | Juicio de expertos | `data/time_log.csv` (columna más probable) | E12 | Horas por tarea/módulo + justificación | 🟨 |
@@ -51,4 +51,4 @@
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | — | E01–E14 con archivo y fecha | ⬜ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` | — | Entradas por sprint | 🟨 |
 
-**Grado de cumplimiento actual:** 2 / 44 (4.5 %) Cumple · 10 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 2 / 44 (4.5 %) Cumple · 15 en progreso. Nada se marca Cumple hasta tener evidencia.
