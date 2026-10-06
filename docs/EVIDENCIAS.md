@@ -12,7 +12,8 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E02c | Tablero Kanban público, columnas ordenadas, T01–T03 en Done (cierre de S0); #2 cerrado 2026-10-05T06:55:23Z | `evidence/E02c_kanban_final_S0_2026-10-05_0110.png` | 2026-10-05 ~01:10 | 3a8a2d5 | PRO-01, CAL-08 |
 | E02b | Primer PR (#26) integrado con merge commit | `evidence/E02b_primer_pr_merge_2026-10-05_0057.png` | 2026-10-05 00:57 | 2c456f0 → 3a8a2d5 | PRO-02, CAL-08 |
 | E03 | Diagrama de arquitectura | | | | DOC-04 |
-| E04 | Ejecución de la CLI | | | | PRG-06 |
+| E04 | pytest (17/17) y ruff limpio — T08 | `evidence/E04_pytest_ruff_T08_2026-10-06_1222.png` | 2026-10-06 12:22 | 1b1c11e + cambios de T08 | PRG-04, PRG-06 |
+| E04b | Ejecución de la CLI `python -m qualityops` y primeras líneas de `reports/metrics.json` (17/17 pruebas, cobertura 81.88 %, CC máx. 9, 0.449 KLOC, 0 defectos) | `evidence/E04b_cli_metrics_json_T08_2026-10-06_1222.png` | 2026-10-06 12:22 | 1b1c11e + cambios de T08 (sin commit aún) | PRG-06, PRG-07 |
 | E05 | Salida de pytest (5/5) y ruff limpio — T04 | `evidence/E05_pytest_ruff_T04_2026-10-05.png` | 2026-10-05 ~10:20 | 19d18b6 | PRG-04, CAL-05 |
 | E05b | Salida de pytest (8/8) y ruff limpio — T05 | `evidence/E05b_pytest_ruff_T05_2026-10-05.png` | 2026-10-05 ~10:40 | 6ad52ac | PRG-04, CAL-05 |
 | E06 | Cobertura de QualityOps vs. `coverage report` (coinciden por archivo; global 80.62 %) | `evidence/E06_cobertura_vs_coverage_T05_2026-10-05.png` | 2026-10-05 ~10:40 | 6ad52ac | MET-P2 |

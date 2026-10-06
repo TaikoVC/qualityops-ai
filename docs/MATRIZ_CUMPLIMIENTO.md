@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-05 21:40 — T07 integrado (PR #31, 2e9abd5).
+> Última actualización: 2026-10-06 12:40 — T08 integrado (PR #32, 454864e): CLI y metrics.json.
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -20,8 +20,8 @@
 | PRG-03 | Automatización | Pipeline lint→test→análisis→gate→informe | E08 | Pasos visibles en log | ⬜ |
 | PRG-04 | Validación de software | pytest + ruff | E05, E05b | Pruebas verdes, ruff limpio | 🟨 |
 | PRG-05 | GitHub + repositorio | Repo + README + issues | E00, E00c, E01, 9823160 | URL accesible, README reproducible | 🟨 (falta sección Uso del README) |
-| PRG-06 | Ejecución y salida | CLI + Streamlit | E04, E09 | Capturas reales | ⬜ |
-| PRG-07 | Métricas | Motor `qualityops/` | E05–E12 | Todas las MET calculadas | ⬜ |
+| PRG-06 | Ejecución y salida | CLI `python -m qualityops` → `reports/metrics.json` (hecho, T08) + dashboard Streamlit (pendiente, T18) | E04, E04b | Salida real visible en CLI y dashboard | 🟨 |
+| PRG-07 | Métricas | Motor `qualityops/` | E04b, E05–E12 | Todas las MET calculadas | 🟨 |
 | PRG-08 | Proyecto DevOps justificado | Capítulo de justificación | — | Justificación + métricas reales del proyecto analizado | ⬜ |
 | PRG-09 | Revisión en clase | `docs/DEMO.md` | — | Demo ensayada < 5 min | ⬜ |
 | CAL-01 | Calidad y grado de cumplimiento | Semáforo + % calculado | E14 | % calculado por el programa | ⬜ |
@@ -51,4 +51,4 @@
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | — | E01–E14 con archivo y fecha | ⬜ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` | — | Entradas por sprint | 🟨 |
 
-**Grado de cumplimiento actual:** 3 / 44 (6.8 %) Cumple · 14 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 3 / 44 (6.8 %) Cumple · 16 en progreso. Nada se marca Cumple hasta tener evidencia.

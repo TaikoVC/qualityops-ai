@@ -6,7 +6,7 @@ T04,Complejidad ciclomática y LOC (radon),product_metrics,MET-P1,0.5,1.0,2.0,S1
 T05,Cobertura de código (pytest-cov),product_metrics,MET-P2,0.5,0.75,1.5,S1A,#5,2026-10-05 10:29,2026-10-05 10:44,0.25,S1A (adelantado),#29 (merge c7edea1),"Fin = hora del merge commit. El código se generó con IA antes del inicio; el tiempo mide integración, verificación (pytest, ruff, comparación con coverage) y PR"
 T06,Minería de defectos SZZ adaptada (git + trailers),defects,MET-P3;MET-R1;MET-R2;MET-R3;MET-J1,0.75,1.25,2.5,S1B,#6,2026-10-05 21:13,2026-10-05 21:22,0.15,S1B,#30 (merge 38ea0c8),"Fin = hora del merge commit. Código adaptado con IA antes del inicio (incluye 2 correcciones en el entorno de la IA, ver AI_LOG); el tiempo mide integración, verificación y PR"
 T07,Densidad de defectos,product_metrics,MET-P3,0.25,0.25,0.5,S1B,#7,2026-10-05 21:29,2026-10-05 21:35,0.10,S1B,#31 (merge 2e9abd5),"Fin = hora del merge commit. Código generado con IA antes del inicio; el tiempo mide integración, verificación (SLOC vs radon raw) y PR"
-T08,CLI python -m qualityops y metrics.json,cli,PRG-06,0.5,0.75,1.5,S1B,,,,,,,
+T08,CLI python -m qualityops y metrics.json,cli,PRG-06,0.5,0.75,1.5,S1B,#8,2026-10-06 12:20,2026-10-06 12:31,0.18,S1B,#32 (merge 454864e),"Fin = hora del merge commit. Código generado con IA antes del inicio; el tiempo mide integración, verificación (consistencia interna de metrics.json) y PR"
 T09,Configuración ruff/pytest/coverage (pyproject),quality_gate,PRG-04,0.25,0.25,0.5,S1B,,,,,,,
 T10,Quality gate con umbrales,quality_gate,CAL-07,0.5,0.75,1.5,S1C,,,,,,,
 T11,Pipeline GitHub Actions,ci,PRG-01;PRG-03,0.5,1.0,2.0,S1C,,,,,,,

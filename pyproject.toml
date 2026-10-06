@@ -1,0 +1,17 @@
+# Configuración de QualityOps AI (T09) y umbrales del quality gate (T10).
+# Un solo archivo para que cualquier persona vea, en un lugar, cómo se valida el proyecto.
+
+[tool.pytest.ini_options]
+# Dónde están las pruebas automatizadas.
+testpaths = ["tests"]
+
+[tool.ruff]
+# Versión mínima de Python que soporta el código (usa tomllib y "str | None").
+target-version = "py311"
+
+[tool.qualityops.umbrales]
+# Criterios que una versión debe cumplir para poder integrarse (enfoque preventivo).
+# Cobertura: 75 % = nivel "encomiable" según Arguelles et al. (2020), Google Testing Blog.
+cobertura_minima = 75.0
+# Complejidad: ninguna función puede superar CC 10 = bajo riesgo según McCabe (1976).
+complejidad_maxima = 10
