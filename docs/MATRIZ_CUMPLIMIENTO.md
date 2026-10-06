@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-05 10:30 — T04 integrado (PR #28, 8fa7528).
+> Última actualización: 2026-10-05 10:50 — T05 integrado (PR #29, c7edea1).
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -18,7 +18,7 @@
 | PRG-01 | Tecnologías DevOps | GitHub Actions + quality gates | E08 | Workflow en cada push | ⬜ |
 | PRG-02 | IA en frameworks | `ai_advisor.py` + `AI_LOG.md` | E10 | Entrada y salida de IA visibles | ⬜ |
 | PRG-03 | Automatización | Pipeline lint→test→análisis→gate→informe | E08 | Pasos visibles en log | ⬜ |
-| PRG-04 | Validación de software | pytest + ruff | E05 (T04) | Pruebas verdes, ruff limpio | 🟨 |
+| PRG-04 | Validación de software | pytest + ruff | E05, E05b | Pruebas verdes, ruff limpio | 🟨 |
 | PRG-05 | GitHub + repositorio | Repo + README + issues | E00, E00c, E01, 9823160 | URL accesible, README reproducible | 🟨 (falta sección Uso del README) |
 | PRG-06 | Ejecución y salida | CLI + Streamlit | E04, E09 | Capturas reales | ⬜ |
 | PRG-07 | Métricas | Motor `qualityops/` | E05–E12 | Todas las MET calculadas | ⬜ |
@@ -34,7 +34,7 @@
 | CAL-08 | Carácter sistemático | Kanban + DoD + trazabilidad | E02, E02b | Requisito → issue → commit → evidencia | 🟨 |
 | MET-00 | Métricas aplicando IA | Cálculo determinista + IA interpreta/verifica | E10 | Interpretación coherente con valores | ⬜ |
 | MET-P1 | Complejidad ciclomática | `qualityops/product_metrics.py` (radon, por función; promedio, mediana, máximo, CC ≤ 10) | E07, 19d18b6, PR #28 | Coincide con `radon cc -s` por función | ✅ |
-| MET-P2 | Cobertura | pytest-cov | E06 | Coincide con `coverage report` | ⬜ |
+| MET-P2 | Cobertura | `qualityops/coverage_metrics.py` (pytest-cov, global y por archivo, solo código de producto) | E06, 6ad52ac, PR #29 | Coincide con `coverage report` | ✅ |
 | MET-P3 | Densidad de defectos | commits `fix:` (minería SZZ) / KLOC (radon) | E11 | Fórmula probada | ⬜ |
 | MET-R1 | MTTD | promedio(fecha fix − fecha commit inductor SZZ) | E11 | Verificable con `git log`/`git blame` | ⬜ |
 | MET-R2 | MTTR | promedio(fecha merge del PR − fecha fix) | E11 | Verificable con `git log --merges` | ⬜ |
@@ -51,4 +51,4 @@
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | — | E01–E14 con archivo y fecha | ⬜ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` | — | Entradas por sprint | 🟨 |
 
-**Grado de cumplimiento actual:** 1 / 44 (2.3 %) Cumple · 10 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 2 / 44 (4.5 %) Cumple · 10 en progreso. Nada se marca Cumple hasta tener evidencia.

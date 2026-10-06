@@ -14,7 +14,8 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E03 | Diagrama de arquitectura | | | | DOC-04 |
 | E04 | Ejecución de la CLI | | | | PRG-06 |
 | E05 | Salida de pytest (5/5) y ruff limpio — T04 | `evidence/E05_pytest_ruff_T04_2026-10-05.png` | 2026-10-05 ~10:20 | 19d18b6 | PRG-04, CAL-05 |
-| E06 | Reporte de cobertura | | | | MET-P2 |
+| E05b | Salida de pytest (8/8) y ruff limpio — T05 | `evidence/E05b_pytest_ruff_T05_2026-10-05.png` | 2026-10-05 ~10:40 | 6ad52ac | PRG-04, CAL-05 |
+| E06 | Cobertura de QualityOps vs. `coverage report` (coinciden por archivo; global 80.62 %) | `evidence/E06_cobertura_vs_coverage_T05_2026-10-05.png` | 2026-10-05 ~10:40 | 6ad52ac | MET-P2 |
 | E07 | Complejidad por función de QualityOps vs. `radon cc -s` (7/7 coinciden) | `evidence/E07_complejidad_vs_radon_T04_2026-10-05.png` | 2026-10-05 ~10:20 | 19d18b6 | MET-P1 |
 | E08 | GitHub Actions (verde y bloqueo corregido) | | | | PRG-01, PRG-03, CAL-07 |
 | E09 | Dashboard | | | | PRG-06 |
