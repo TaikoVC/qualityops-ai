@@ -20,7 +20,7 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E08 | GitHub Actions (verde y bloqueo corregido) | | | | PRG-01, PRG-03, CAL-07 |
 | E09 | Dashboard | | | | PRG-06 |
 | E10 | AI Advisor: entrada y salida | | | | PRG-02, MET-00 |
-| E11 | Defectos minados y métricas de proceso | | | | MET-P3, MET-R1..R3, MET-J1 |
+| E11 | Minería de defectos sobre el propio repo: 8 commits, 3 merges, 0 tags, 0 defectos (aún no hay commits `fix:`); 13/13 pruebas | `evidence/E11_mineria_defectos_T06_2026-10-05_2115.png` | 2026-10-05 21:15 | a7f8d76 | MET-P3, MET-R1..R3, MET-J1 |
 | E12 | Estimaciones (4 técnicas) | | | | EST-1..4 |
 | E13 | Reporte final | | | | DOC-01..09 |
 | E14 | Matriz de cumplimiento final | | | | CAL-01 |
