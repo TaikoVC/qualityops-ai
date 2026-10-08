@@ -12,7 +12,6 @@ on:
 
 permissions:
   contents: read
-  models: read   # permite usar GitHub Models con el GITHUB_TOKEN (AI Advisor, decisión D17)
 
 jobs:
   calidad:
@@ -47,9 +46,6 @@ jobs:
       - name: Informe de calidad (ISO/IEC/IEEE 29119-3) e interpretación del AI Advisor
         # Se genera aunque el gate haya bloqueado: el informe explica por qué.
         if: always() && hashFiles('reports/metrics.json') != ''
-        env:
-          QUALITYOPS_IA: github
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python -m qualityops.report --metricas reports/metrics.json
           cat reports/quality_report.md >> "$GITHUB_STEP_SUMMARY"

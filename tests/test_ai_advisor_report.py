@@ -6,7 +6,6 @@ coherentes entre sí (cobertura 80 = 8/10, KLOC 0.5, densidad 2.0 = 1/0.5).
 
 import json
 
-from qualityops import ai_advisor
 from qualityops.ai_advisor import analizar, cliente_desde_entorno, verificar_coherencia
 from qualityops.report import dictamen, generar_informe, main
 
@@ -101,33 +100,7 @@ def test_nombres_de_archivo_no_se_rompen_en_markdown():
     assert "`qualityops/__main__.py`" in texto
 
 
-def test_seleccion_de_proveedor(monkeypatch):
+
+def test_sin_llave_no_hay_llm(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
-    monkeypatch.delenv("QUALITYOPS_IA", raising=False)
     assert cliente_desde_entorno() is None                      # sin IA -> ruta por reglas
-    monkeypatch.setenv("QUALITYOPS_IA", "github")
-    monkeypatch.setenv("GITHUB_TOKEN", "token-de-prueba")
-    assert callable(cliente_desde_entorno())
-
-
-def test_cliente_github_models_sin_red(monkeypatch):
-    # Se simula la respuesta HTTP de GitHub Models para no depender de la red.
-    class Respuesta:
-        def __enter__(self):
-            return self
-
-        def __exit__(self, *args):
-            return False
-
-        def read(self):
-            return json.dumps({"choices": [{"message": {"content": "Interpretación simulada"}}]}).encode()
-
-    enviado = {}
-
-    def falso_urlopen(peticion, timeout):
-        enviado["url"], enviado["auth"] = peticion.full_url, peticion.headers["Authorization"]
-        return Respuesta()
-
-    monkeypatch.setattr(ai_advisor.urllib.request, "urlopen", falso_urlopen)
-    assert ai_advisor.cliente_github_models("abc")("hola") == "Interpretación simulada"
-    assert enviado == {"url": ai_advisor.URL_GITHUB_MODELS, "auth": "Bearer abc"}

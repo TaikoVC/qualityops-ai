@@ -12,10 +12,9 @@ la IA NO calcula números, los interpreta. Por eso este módulo:
   3. Si hay un modelo de lenguaje disponible, le envía el resumen de métricas y
      las verificaciones para que redacte la interpretación; si falla por cualquier
      motivo, se usa la ruta por reglas (decisión D03: la app nunca se cae por la IA).
-     Proveedores (se elige con la variable QUALITYOPS_IA):
-       - "github": GitHub Models con el GITHUB_TOKEN del pipeline (gratuito en
-         GitHub Actions con el permiso `models: read`; decisión D17).
-       - "anthropic": API de Anthropic (requiere ANTHROPIC_API_KEY y el paquete `anthropic`).
+     Proveedor: API de Anthropic (requiere ANTHROPIC_API_KEY y el paquete `anthropic`).
+     Nota (D18): se probó GitHub Models en el CI, pero el servicio fue retirado
+     por GitHub el 30 de julio de 2026; ese proveedor se eliminó.
 
 El resultado indica siempre su "fuente": "reglas" o "llm".
 """
@@ -24,14 +23,10 @@ from __future__ import annotations
 
 import json
 import os
-import urllib.request
 from collections.abc import Callable
 
-# Modelos configurables sin tocar el código (variables de entorno opcionales).
+# Modelo configurable sin tocar el código (variable de entorno opcional).
 MODELO_POR_DEFECTO = os.environ.get("QUALITYOPS_MODELO", "claude-sonnet-4-5")
-MODELO_GITHUB = os.environ.get("QUALITYOPS_MODELO_GITHUB", "openai/gpt-4o")
-URL_GITHUB_MODELS = "https://models.github.ai/inference/chat/completions"
-
 
 # --------------------------------------------------------------------------
 # 1. Verificaciones de coherencia (deterministas)
@@ -165,21 +160,6 @@ def construir_prompt(m: dict, verificaciones: list[dict]) -> str:
             + json.dumps(verificaciones, ensure_ascii=False) + "\n\nMétricas:\n" + json.dumps(resumen, ensure_ascii=False))
 
 
-def cliente_github_models(token: str) -> Callable[[str], str]:
-    """Cliente para GitHub Models (API compatible con OpenAI) usando solo la biblioteca estándar."""
-
-    def llamar(prompt: str) -> str:
-        cuerpo = json.dumps({"model": MODELO_GITHUB,
-                             "messages": [{"role": "user", "content": prompt}]}).encode("utf-8")
-        peticion = urllib.request.Request(URL_GITHUB_MODELS, data=cuerpo, method="POST", headers={
-            "Authorization": f"Bearer {token}", "Content-Type": "application/json"})
-        with urllib.request.urlopen(peticion, timeout=60) as respuesta:
-            datos = json.loads(respuesta.read().decode("utf-8"))
-        return datos["choices"][0]["message"]["content"]
-
-    return llamar
-
-
 def _cliente_anthropic() -> Callable[[str], str] | None:
     try:
         import anthropic  # dependencia opcional: solo si se quiere usar la API de Anthropic
@@ -196,10 +176,7 @@ def _cliente_anthropic() -> Callable[[str], str] | None:
 
 
 def cliente_desde_entorno() -> Callable[[str], str] | None:
-    """Devuelve una función prompt -> texto según QUALITYOPS_IA; None si no hay IA disponible."""
-    proveedor = os.environ.get("QUALITYOPS_IA", "").lower()
-    if proveedor == "github" and os.environ.get("GITHUB_TOKEN"):
-        return cliente_github_models(os.environ["GITHUB_TOKEN"])
+    """Devuelve una función prompt -> texto si hay un LLM disponible; si no, None."""
     if os.environ.get("ANTHROPIC_API_KEY"):
         return _cliente_anthropic()
     return None
@@ -215,8 +192,7 @@ def analizar(m: dict, gate: dict | None = None, cliente: Callable[[str], str] | 
         try:
             texto = cliente(prompt)
             if texto and texto.strip():
-                resultado.update(fuente="llm", texto_llm=texto.strip(), prompt=prompt,
-                                 proveedor=os.environ.get("QUALITYOPS_IA", "anthropic") or "anthropic")
+                resultado.update(fuente="llm", texto_llm=texto.strip(), prompt=prompt)
         except Exception as error:  # noqa: BLE001  cualquier fallo de la IA -> se queda la ruta por reglas
             resultado["error_llm"] = f"{type(error).__name__}: {error}"
     return resultado
