@@ -32,5 +32,13 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E11d | CLI con métricas de proceso y proyecto: 32/32 pruebas, cobertura 85.68 %, 0.615 KLOC, MTTD/MTTR sin datos (n = 0), desviación −52.8 % (11 tareas), plazos 54.55 % | `evidence/E11d_cli_proceso_proyecto_T13T14_2026-10-08_0035.png` | 2026-10-08 ~00:35 | 415d819 + cambios de T13/T14 | MET-R1..R3, MET-J1..J3 |
 | E08f | CI verde en PR #36 antes del merge (primera vez con `main` protegida) | `evidence/E08f_gh_pr_checks_T13T14_2026-10-08_0037.png` | 2026-10-08 00:37 | 1b871e5 | PRG-01, CAL-07 |
 | E12 | Estimaciones (4 técnicas) | | | | EST-1..4 |
+| E10 | Resumen de Actions del PR #38: gate APROBADO + informe de calidad completo (12 secciones, fuente: reglas, verificaciones de coherencia OK) | `evidence/E10_actions_PR38_summary_1..4_2026-10-08_0120.png` | 2026-10-08 ~01:20 | cf916cb | CAL-02, PRG-02, MET-00 |
+| E10b | Checks verdes del PR #38 y primer intento de merge fallido por 502 de GitHub | `evidence/E10b_checks_y_merge_502_PR38_2026-10-08_0122.png` | 2026-10-08 01:22 | cf916cb | PRG-01 |
+| E10c | Informe generado localmente (lectura en PowerShell sin `-Encoding UTF8`, por eso los acentos se ven mal; el archivo es UTF-8) | `evidence/E10c_informe_local_powershell_2026-10-08_0115.png` | 2026-10-08 01:15 | 6de8c75 + cambios | CAL-02 |
+| E12 | CLI con las 4 técnicas: juicio 22.5 h · PERT 24.79 h · PF 4.24 h · análoga 4.79 h; 44/44 pruebas; gate APROBADO | `evidence/E12_cli_estimacion_4_tecnicas_2026-10-08_0114.png` | 2026-10-08 01:14 | 6de8c75 + cambios | EST-1..4 |
+| E15 | **Defecto real 1** detectado en revisión del PR #38: `qualityops/__main__.py` se mostraba como **main.py** | `evidence/E15_defecto1_markdown_main_py_PR38_2026-10-08_0120.png` | 2026-10-08 01:20 | cf916cb (inductor) | MET-J1, MET-R1 |
+| E15b | Informe corregido en Actions: `qualityops/__main__.py` y defecto 1 en la tabla (menor, revisión) | `evidence/E15b_informe_corregido_PR38_2026-10-08_0135.png` | 2026-10-08 ~01:35 | a6139f9 | MET-J1 |
+| E15c | Commit de corrección con trailers `Severidad`, `Detectado-en`, `Evidencia`, `Refs` | `evidence/E15c_commit_fix_con_trailers_2026-10-08_0131.png` | 2026-10-08 01:31 | a6139f9 | PRO-02, CAL-08 |
+| E11e | Minería sobre main: 1 defecto real (menor, revisión por trailer), MTTD 0.22 h, MTTR 0.13 h, inductor cf916cb | `evidence/E11e_mineria_1_defecto_real_2026-10-08_0140.png` | 2026-10-08 ~01:40 | 054a942 | MET-P3, MET-R1, MET-R2, MET-J1 |
 | E13 | Reporte final | | | | DOC-01..09 |
 | E14 | Matriz de cumplimiento final | | | | CAL-01 |
