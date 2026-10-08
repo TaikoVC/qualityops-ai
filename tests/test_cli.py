@@ -46,3 +46,4 @@ def test_genera_metrics_json(tmp_path):
     assert m["defectos"]["n_defectos"] == 0
     assert m["proceso"]["mttd"]["n"] == 0
     assert m["proyecto"]["desviacion"]["tareas_terminadas"] == 0
+    assert m["estimacion"]["juicio_expertos"]["horas"] == 0

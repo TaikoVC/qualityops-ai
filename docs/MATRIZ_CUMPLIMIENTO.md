@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-08 00:30 — T11 integrado (PR #35, 00517a7): CI en GitHub Actions y protección de main.
+> Última actualización: 2026-10-08 00:55 — T13/T14 integrados (PR #36, 03ca184).
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -36,12 +36,12 @@
 | MET-P1 | Complejidad ciclomática | `qualityops/product_metrics.py` (radon, por función; promedio, mediana, máximo, CC ≤ 10) | E07, 19d18b6, PR #28 | Coincide con `radon cc -s` por función | ✅ |
 | MET-P2 | Cobertura | `qualityops/coverage_metrics.py` (pytest-cov, global y por archivo, solo código de producto) | E06, 6ad52ac, PR #29 | Coincide con `coverage report` | ✅ |
 | MET-P3 | Densidad de defectos | `qualityops/density.py`: defectos de producto (minería SZZ) / KLOC (radon), global y por archivo | E11b, E11c, PR #31 | Fórmula probada; SLOC coincide con `radon raw`. Valor actual 0.0 (n = 0 defectos reales); se recalcula en cada ejecución | ✅ |
-| MET-R1 | MTTD | promedio(fecha fix − fecha commit inductor SZZ) | E11 (minería lista, n = 0) | Verificable con `git log`/`git blame` | 🟨 |
-| MET-R2 | MTTR | promedio(fecha merge del PR − fecha fix) | E11 (minería lista, n = 0) | Verificable con `git log --merges` | 🟨 |
-| MET-R3 | Eficacia de pruebas | críticos detectados antes de un tag / críticos totales (trailers `Severidad`, `Detectado-en`) | E11 (minería lista, n = 0) | Fórmula probada | 🟨 |
-| MET-J1 | Eficacia de revisión | defectos con `Detectado-en: revision` / defectos con fase conocida | E11 (minería lista, n = 0) | Fórmula probada | 🟨 |
-| MET-J2 | Desviación tiempo/esfuerzo + densidad por módulo | `data/time_log.csv` (estimado vs real por módulo) | Estimación en commit 76f14fb (2026-10-04 23:02), antes de cualquier código | Estimación con commit previo al código | 🟨 |
-| MET-J3 | Plazos (+ satisfacción opcional) | Tablero / encuesta | — | % tareas en sprint planeado | ⬜ |
+| MET-R1 | MTTD | `process_metrics.py`: promedio y mediana (fecha fix − fecha commit inductor SZZ) | E11, E11d | Fórmula probada; valor real con n > 0 | 🟨 (calculado, n = 0) |
+| MET-R2 | MTTR | `process_metrics.py`: promedio y mediana (fecha merge − fecha fix) | E11, E11d | Fórmula probada; valor real con n > 0 | 🟨 (calculado, n = 0) |
+| MET-R3 | Eficacia de pruebas | `process_metrics.py`: críticos antes de producción / críticos con fase conocida | E11, E11d | Fórmula probada; valor real con n > 0 | 🟨 (calculado, n = 0) |
+| MET-J1 | Eficacia de revisión | `project_metrics.py`: defectos en revisión / defectos con fase conocida | E11, E11d | Fórmula probada; valor real con n > 0 | 🟨 (calculado, n = 0) |
+| MET-J2 | Desviación tiempo/esfuerzo por módulo | `project_metrics.py` + `data/time_log.csv` (estimación en 76f14fb, antes del código) | E11d | Desviación por módulo y total con datos reales | ✅ |
+| MET-J3 | Plazos (+ satisfacción opcional) | `project_metrics.py`: fecha real de cierre vs fecha del sprint (`pyproject.toml`) | E11d | % de tareas a tiempo con datos reales | ✅ |
 | EST-1 | Juicio de expertos | `data/time_log.csv` (columna más probable) | E12 | Horas por tarea/módulo + justificación | 🟨 |
 | EST-2 | Estimación análoga | `estimation.py` | E12 | Referencia + factor de ajuste | ⬜ |
 | EST-3 | Tres puntos (PERT) | `estimation.py` | E12 | O, M, P, E y σ | ⬜ |
@@ -51,4 +51,4 @@
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | — | E01–E14 con archivo y fecha | ⬜ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` | — | Entradas por sprint | 🟨 |
 
-**Grado de cumplimiento actual:** 5 / 44 (11.4 %) Cumple · 18 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 7 / 44 (15.9 %) Cumple · 17 en progreso. Nada se marca Cumple hasta tener evidencia.

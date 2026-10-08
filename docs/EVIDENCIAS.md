@@ -29,6 +29,8 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E11 | Minería de defectos sobre el propio repo: 8 commits, 3 merges, 0 tags, 0 defectos (aún no hay commits `fix:`); 13/13 pruebas | `evidence/E11_mineria_defectos_T06_2026-10-05_2115.png` | 2026-10-05 21:15 | a7f8d76 | MET-P3, MET-R1..R3, MET-J1 |
 | E11b | Densidad de defectos por archivo y global (0 defectos / 0.387 KLOC = 0.0) | `evidence/E11b_densidad_T07_2026-10-05_2132.png` | 2026-10-05 21:32 | fe34430 | MET-P3 |
 | E11c | `radon raw -s`: SLOC por archivo coincide con la densidad (91, 163, 37, 95) | `evidence/E11c_radon_raw_sloc_T07_2026-10-05_2132.png` | 2026-10-05 21:32 | fe34430 | MET-P3 |
+| E11d | CLI con métricas de proceso y proyecto: 32/32 pruebas, cobertura 85.68 %, 0.615 KLOC, MTTD/MTTR sin datos (n = 0), desviación −52.8 % (11 tareas), plazos 54.55 % | `evidence/E11d_cli_proceso_proyecto_T13T14_2026-10-08_0035.png` | 2026-10-08 ~00:35 | 415d819 + cambios de T13/T14 | MET-R1..R3, MET-J1..J3 |
+| E08f | CI verde en PR #36 antes del merge (primera vez con `main` protegida) | `evidence/E08f_gh_pr_checks_T13T14_2026-10-08_0037.png` | 2026-10-08 00:37 | 1b871e5 | PRG-01, CAL-07 |
 | E12 | Estimaciones (4 técnicas) | | | | EST-1..4 |
 | E13 | Reporte final | | | | DOC-01..09 |
 | E14 | Matriz de cumplimiento final | | | | CAL-01 |
