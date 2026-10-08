@@ -1,0 +1,52 @@
+// Arquitectura de componentes de QualityOps AI (T20).
+// Elaborado a partir de los imports reales del código (qualityops/*.py y app.py).
+// Regenerar:  dot -Tpng -Gdpi=200 arquitectura.dot -o arquitectura.png
+digraph arquitectura {
+  graph [rankdir=TB, fontname="Arial", fontsize=12, nodesep=0.2, ranksep=0.45, pad=0.2, bgcolor="white"];
+  node  [shape=box, style="rounded,filled", fontname="Arial", fontsize=10, color="#365F91", fillcolor="#EAF1FB", penwidth=1.2];
+  edge  [fontname="Arial", fontsize=8, color="#555555", arrowsize=0.7];
+
+  subgraph cluster_entradas {
+    label="Entradas (repositorio analizado, --repo)"; style="rounded,dashed"; color="#7F7F7F"; fontcolor="#404040";
+    codigo   [label="Código Python\n(*.py)", fillcolor="#F2F2F2", color="#7F7F7F"];
+    pruebas  [label="Pruebas\n(tests/)", fillcolor="#F2F2F2", color="#7F7F7F"];
+    historial[label="Historial Git\n(commits, merges, tags,\ntrailers Severidad/Detectado-en)", fillcolor="#F2F2F2", color="#7F7F7F"];
+    datos    [label="data/time_log.csv\ndata/estimacion.json\npyproject.toml", fillcolor="#F2F2F2", color="#7F7F7F"];
+  }
+
+  subgraph cluster_motor {
+    label="Motor de métricas determinista (qualityops/)"; style="rounded"; color="#365F91"; fontcolor="#244061";
+    product  [label="product_metrics.py\nCC (radon) y LOC"];
+    coverage [label="coverage_metrics.py\npytest + pytest-cov"];
+    defects  [label="defects.py\nminería SZZ"];
+    density  [label="density.py\ndefectos / KLOC"];
+    process  [label="process_metrics.py\nMTTD, MTTR, eficacia pruebas"];
+    project  [label="project_metrics.py\nrevisión, desviación, plazos"];
+    estim    [label="estimation.py\n4 técnicas"];
+    cli      [label="cli.py\npython -m qualityops", fillcolor="#D9E5F5", penwidth=1.6];
+  }
+
+  metrics [label="reports/metrics.json", shape=note, fillcolor="#FFF4D6", color="#B8860B"];
+
+  subgraph cluster_salidas {
+    label="Validación, interpretación y presentación"; style="rounded"; color="#2E7D32"; fontcolor="#1B5E20";
+    gate    [label="quality_gate.py\numbrales de pyproject.toml\nexit 0 = aprobado / 1 = bloqueado", fillcolor="#E8F5E9", color="#2E7D32"];
+    advisor [label="ai_advisor.py\ncoherencia + reglas\n+ LLM Gemini (opcional)", fillcolor="#E8F5E9", color="#2E7D32"];
+    report  [label="report.py\ninforme ISO/IEC/IEEE 29119-3", fillcolor="#E8F5E9", color="#2E7D32"];
+    app     [label="app.py + dashboard.py\nStreamlit (6 pestañas)", fillcolor="#E8F5E9", color="#2E7D32"];
+  }
+
+  gemini [label="API Gemini\n(Google AI Studio)", shape=component, fillcolor="#FCE4EC", color="#AD1457"];
+  outs   [label="gate.json · ai_analysis.json\nquality_report.md", shape=note, fillcolor="#FFF4D6", color="#B8860B"];
+
+  codigo -> product; codigo -> coverage; pruebas -> coverage;
+  historial -> defects; datos -> project; datos -> estim;
+  defects -> density; product -> density [style=dashed, label="SLOC"];
+  defects -> process; defects -> project [style=dashed, label="fase"];
+  product -> cli; coverage -> cli; density -> cli; process -> cli; project -> cli; estim -> cli; defects -> cli;
+  cli -> metrics;
+  metrics -> gate; metrics -> report; report -> advisor [dir=both, label="analizar()"];
+  advisor -> gemini [style=dashed, label="HTTPS, solo\nmétricas agregadas"];
+  gate -> outs; report -> outs;
+  metrics -> app; outs -> app;
+}

@@ -46,6 +46,9 @@ def crear_proyecto(tmp_path):
     (tmp_path / "tests" / "test_logica.py").write_text("def test_x():\n    assert True\n", encoding="utf-8")
     (tmp_path / ".venv").mkdir()
     (tmp_path / ".venv" / "lib.py").write_text("def f():\n    return 1\n", encoding="utf-8")
+    # Herramientas de documentación (p. ej. docs/reporte/graficas.py) tampoco son producto (D20).
+    (tmp_path / "docs").mkdir()
+    (tmp_path / "docs" / "graficas.py").write_text("def dibujar():\n    return 1\n", encoding="utf-8")
     return tmp_path
 
 

@@ -1,0 +1,18 @@
+// Ciclo de vida de un cambio y dónde se mide cada métrica de proceso y proyecto (T20).
+// Regenerar:  dot -Tpng -Gdpi=200 ciclo_defecto.dot -o ciclo_defecto.png
+digraph ciclo {
+  graph [rankdir=LR, fontname="Arial", fontsize=11, nodesep=0.4, ranksep=0.5, pad=0.2, bgcolor="white"];
+  node  [shape=box, style="rounded,filled", fontname="Arial", fontsize=10, fillcolor="#EAF1FB", color="#365F91"];
+  edge  [fontname="Arial", fontsize=9, color="#555555"];
+  ind  [label="Commit inductor\n(lo identifica git blame\nsobre el padre del fix: SZZ)"];
+  det  [label="Detección\nrevisión del PR · pruebas/CI\n· producción (tag)", fillcolor="#FFF4D6", color="#B8860B"];
+  fix  [label="Commit fix:\ntrailers Severidad,\nDetectado-en, Evidencia"];
+  mrg  [label="Merge commit a main\n(servicio restaurado)", fillcolor="#E8F5E9", color="#2E7D32"];
+  ind -> det -> fix;
+  ind -> fix [label="MTTD = fecha fix − fecha inductor", color="#365F91", fontcolor="#244061", constraint=false, style=bold];
+  fix -> mrg [label="MTTR = fecha merge − fecha fix", color="#2E7D32", fontcolor="#1B5E20", style=bold];
+  e1 [shape=note, fillcolor="#F2F2F2", color="#7F7F7F", label="Eficacia de la revisión =\ndefectos con Detectado-en: revision\n/ defectos con fase conocida"];
+  e2 [shape=note, fillcolor="#F2F2F2", color="#7F7F7F", label="Eficacia de las pruebas =\ndefectos críticos antes de producción\n/ críticos con fase conocida"];
+  e3 [shape=note, fillcolor="#F2F2F2", color="#7F7F7F", label="Densidad =\ndefectos de producto / KLOC"];
+  det -> e1 [style=dotted, arrowhead=none]; det -> e2 [style=dotted, arrowhead=none]; fix -> e3 [style=dotted, arrowhead=none];
+}
