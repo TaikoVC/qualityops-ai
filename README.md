@@ -29,7 +29,24 @@ python -m pip install -r requirements.txt
 
 ## Uso
 
-_Se completará en el Sprint 1 (CLI `python -m qualityops`) y el Sprint 2 (dashboard `streamlit run app.py`)._
+```powershell
+# Métricas, quality gate e informe (sobre este repositorio o cualquier otro con --repo)
+python -m qualityops --repo . --salida reports
+python -m qualityops.quality_gate --metricas reports/metrics.json   # código 0 = aprobado, 1 = bloqueado
+python -m qualityops.report --metricas reports/metrics.json          # informe ISO/IEC/IEEE 29119-3
+
+# Interpretación con LLM (opcional): la llave nunca se guarda en archivos
+$env:GEMINI_API_KEY = Read-Host "Pega tu llave (no se guarda)"
+python -m qualityops.report
+
+# Dashboard
+streamlit run app.py
+
+# Gráficas del reporte (requiere: pip install matplotlib)
+python docs/reporte/graficas.py
+```
+
+Umbrales en `pyproject.toml` (`[tool.qualityops.umbrales]`): cobertura ≥ 75 %, complejidad ciclomática ≤ 10.
 
 ## Convención de trabajo (obligatoria)
 

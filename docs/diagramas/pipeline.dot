@@ -1,0 +1,36 @@
+// Pipeline CI de QualityOps AI (.github/workflows/ci.yml) y su relación con ISO/IEC/IEEE 12207 (T20).
+// Regenerar:  dot -Tpng -Gdpi=200 pipeline.dot -o pipeline.png
+digraph pipeline {
+  graph [rankdir=TB, fontname="Arial", fontsize=12, nodesep=0.35, ranksep=0.3, pad=0.2, bgcolor="white"];
+  node  [shape=box, style="rounded,filled", fontname="Arial", fontsize=10, fillcolor="#EAF1FB", color="#365F91", penwidth=1.2];
+  edge  [color="#555555", arrowsize=0.7, fontname="Arial", fontsize=8];
+
+  dev   [label="Desarrollador\nrama TXX + commit\n(Conventional Commits)", fillcolor="#F2F2F2", color="#7F7F7F"];
+  pr    [label="Pull Request\na main", fillcolor="#F2F2F2", color="#7F7F7F"];
+  subgraph cluster_job {
+    label="GitHub Actions · job «calidad» (ubuntu-latest, Python 3.14)"; style="rounded"; color="#365F91"; fontcolor="#244061";
+    s1 [label="1. checkout\nfetch-depth: 0"];
+    s2 [label="2. setup-python\n+ pip install\n(versiones fijadas)"];
+    s3 [label="3. ruff check ."];
+    s4 [label="4. python -m qualityops\npruebas, cobertura,\nCC, defectos, métricas"];
+    s5 [label="5. quality_gate\ncobertura ≥ 75 %\nCC ≤ 10 · 0 fallas", fillcolor="#FFF4D6", color="#B8860B", penwidth=1.6];
+    s6 [label="6. report + AI Advisor\n(siempre, aun si bloquea)", fillcolor="#E8F5E9", color="#2E7D32"];
+    s7 [label="7. artefacto\nreportes-calidad", fillcolor="#E8F5E9", color="#2E7D32"];
+    s1 -> s2 -> s3 -> s4 -> s5 -> s6 -> s7;
+    {rank=same; s1; s2; s3; s4;}
+    {rank=same; s5; s6; s7;}
+  }
+  rule  [label="Ruleset «proteger-main»\nPR obligatorio · check «calidad»\nobligatorio · sin force push", shape=octagon, fillcolor="#FDECEA", color="#C62828"];
+  merge [label="Merge commit\na main", fillcolor="#E8F5E9", color="#2E7D32"];
+  block [label="Merge bloqueado\n(se corrige en la rama)", fillcolor="#FDECEA", color="#C62828"];
+  tag   [label="Tag vX.Y.Z\n= producción", fillcolor="#F2F2F2", color="#7F7F7F"];
+
+  {rank=same; dev; pr;}
+  dev -> pr; pr -> s1;
+  s5 -> rule [label="resultado del check", style=dashed];
+  rule -> merge [label="verde", color="#2E7D32", fontcolor="#2E7D32"];
+  rule -> block [label="rojo", color="#C62828", fontcolor="#C62828"];
+  block -> dev [style=dotted, label="nuevo commit", constraint=false];
+  {rank=same; merge; block;}
+  merge -> tag [style=dashed];
+}

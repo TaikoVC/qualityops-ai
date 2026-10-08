@@ -25,11 +25,13 @@ from radon.raw import analyze
 # Configuración: qué carpetas y archivos NO son código de producto.
 # Se excluyen entornos virtuales, cachés, compilados y las pruebas
 # (las pruebas se miden aparte con la cobertura, no con la complejidad).
+# "docs" se excluye porque guarda herramientas de documentación (por ejemplo,
+# el script que dibuja las gráficas del reporte), no código del producto (D20).
 # --------------------------------------------------------------------------
 CARPETAS_EXCLUIDAS = {
     ".git", ".venv", "venv", "env", "__pycache__", "build", "dist",
     "node_modules", "site-packages", ".pytest_cache", ".ruff_cache",
-    "tests", "test",
+    "tests", "test", "docs",
 }
 
 # Umbral de referencia de McCabe (1976): CC <= 10 se considera bajo riesgo.

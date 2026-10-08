@@ -11,7 +11,7 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E02 | Tablero Kanban con 25 issues (T01–T25), columnas y WIP = 2; tomado durante T02 | `evidence/E02_kanban_durante_T02_2026-10-05_0050.png` | 2026-10-05 ~00:50 | — | PRO-01, CAL-08 |
 | E02c | Tablero Kanban público, columnas ordenadas, T01–T03 en Done (cierre de S0); #2 cerrado 2026-10-05T06:55:23Z | `evidence/E02c_kanban_final_S0_2026-10-05_0110.png` | 2026-10-05 ~01:10 | 3a8a2d5 | PRO-01, CAL-08 |
 | E02b | Primer PR (#26) integrado con merge commit | `evidence/E02b_primer_pr_merge_2026-10-05_0057.png` | 2026-10-05 00:57 | 2c456f0 → 3a8a2d5 | PRO-02, CAL-08 |
-| E03 | Diagrama de arquitectura | | | | DOC-04 |
+| E03 | Diagramas generados con Graphviz desde código versionado: arquitectura, pipeline CI y ciclo de vida del defecto | `docs/diagramas/arquitectura.png`, `pipeline.png`, `ciclo_defecto.png` (fuentes `.dot`) | 2026-10-08 | T20 | DOC-04, CAL-08 |
 | E04 | pytest (17/17) y ruff limpio — T08 | `evidence/E04_pytest_ruff_T08_2026-10-06_1222.png` | 2026-10-06 12:22 | 1b1c11e + cambios de T08 | PRG-04, PRG-06 |
 | E04b | Ejecución de la CLI `python -m qualityops` y primeras líneas de `reports/metrics.json` (17/17 pruebas, cobertura 81.88 %, CC máx. 9, 0.449 KLOC, 0 defectos) | `evidence/E04b_cli_metrics_json_T08_2026-10-06_1222.png` | 2026-10-06 12:22 | 1b1c11e + cambios de T08 (sin commit aún) | PRG-06, PRG-07 |
 | E05 | Salida de pytest (5/5) y ruff limpio — T04 | `evidence/E05_pytest_ruff_T04_2026-10-05.png` | 2026-10-05 ~10:20 | 19d18b6 | PRG-04, CAL-05 |
@@ -50,5 +50,10 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E10i | Sección 10 del informe: interpretación por reglas + interpretación del modelo de lenguaje | `evidence/E10i_informe_seccion10_llm_2026-10-08_0350.png` | 2026-10-08 ~03:50 | 71f84cb + cambios | MET-00, CAL-02 |
 | E10k | Summary de Actions del PR #40: job `calidad` verde, *Intento de LLM: usado*, dictamen LIBERAR CON CONDICIONES | `evidence/E10k_actions_PR40_intento_llm_usado_2026-10-08_0353.png` | 2026-10-08 03:52 (UTC 09:52) | 436e614 | PRG-01, PRG-02, PRG-03, CAL-02 |
 | E11f | Minería sobre main: 3 defectos reales de producto (1 menor/revisión, 1 mayor/pruebas, 1 menor/revisión) con inductor, MTTD y MTTR | `evidence/E11f_mineria_3_defectos_reales_2026-10-08_0300.png` | 2026-10-08 ~03:00 | 78be41c | MET-P3, MET-R1, MET-R2, MET-J1 |
+| E08g | El ruleset impide el merge del PR #41 mientras el check obligatorio «calidad» no termina («the base branch policy prohibits the merge») | `evidence/E08g_ruleset_bloquea_merge_sin_check_PR41_2026-10-08.png` | 2026-10-08 ~07:25 | c4232f6 | CAL-07, PRG-01 |
+| E17a | **Bloqueo real en CI**: `gh pr checks --watch` del PR #42 con el check «calidad» fallido (49 s) | `evidence/E17a_gh_pr_checks_rojo_PR42_2026-10-08.png` | 2026-10-08 | 5576e4f | CAL-07 |
+| E17b | Summary del PR #42: Quality gate BLOQUEADO; pruebas 56/56 y cobertura 86.3 % aprueban, complejidad máxima 11 > 10 falla | `evidence/E17b_actions_gate_bloqueado_cc11_PR42_2026-10-08.png` | 2026-10-08 | 5576e4f | CAL-07, PRG-03 |
+| E17c | PR #42: «All checks have failed», check «calidad» *Required* y botón de merge deshabilitado | `evidence/E17c_pr42_merge_deshabilitado_2026-10-08.png` | 2026-10-08 | 5576e4f | CAL-07 |
+| E17d | Informe del PR #42 con dictamen NO LIBERAR y la recomendación de corregir los criterios que fallan | `evidence/E17d_actions_dictamen_no_liberar_PR42_2026-10-08.png` | 2026-10-08 | 5576e4f | CAL-02, CAL-07 |
 | E13 | Reporte final | | | | DOC-01..09 |
 | E14 | Matriz de cumplimiento final | | | | CAL-01 |

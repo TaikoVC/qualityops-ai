@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-08 07:30 — T18/T19 (PR #39) y T17b Gemini (PR #40) integrados; 3 defectos reales de producto + 1 de pruebas.
+> Última actualización: 2026-10-08 — bloqueo real en CI (PR #42), README con sección Uso, diagramas (T20).
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -19,7 +19,7 @@
 | PRG-02 | IA en frameworks | `ai_advisor.py`: verificación de coherencia + interpretación por reglas + LLM Gemini (AI Studio, secreto `GEMINI_API_KEY` en CI) con respaldo automático + `docs/AI_LOG.md` | E10h, E10i, E10k, PR #40, D19 | Entrada y salida de un LLM real visibles en CI | ✅ |
 | PRG-03 | Automatización | Pipeline ruff → pruebas/métricas → quality gate → resumen en Actions → artefacto | E08, E08c, E08d | Pasos visibles en el log | ✅ |
 | PRG-04 | Validación de software | pytest (56 pruebas) + ruff en local y en cada PR | E05, E05b, E10h, E10k | Pruebas verdes, ruff limpio | ✅ |
-| PRG-05 | GitHub + repositorio | Repo + README + issues | E00, E00c, E01, 9823160 | URL accesible, README reproducible | 🟨 (falta sección Uso del README) |
+| PRG-05 | GitHub + repositorio | Repo + README (instalación, uso y convenciones) + issues | E00, E00c, E01, README | URL accesible, README reproducible | ✅ |
 | PRG-06 | Ejecución y salida | CLI `python -m qualityops` → `reports/metrics.json` + informe + dashboard Streamlit (`app.py`, 6 pestañas) | E04b, E09a–h, E10h | Salida real visible en CLI y dashboard | ✅ |
 | PRG-07 | Métricas | Motor `qualityops/` | E04b, E05–E12 | Todas las MET calculadas | 🟨 |
 | PRG-08 | Proyecto DevOps justificado | Capítulo de justificación | — | Justificación + métricas reales del proyecto analizado | ⬜ |
@@ -30,7 +30,7 @@
 | CAL-04 | Requisitos de usuario y negocio | Historia + expectativas | — | ≥ 1 historia, ≥ 3 expectativas medibles | ⬜ |
 | CAL-05 | Aseguramiento de calidad | Pruebas + ruff + revisión por PR + CI + quality gate | E05, E05b, E08 | Pipeline verde en v1.0 | 🟨 |
 | CAL-06 | Idoneidad funcional y fiabilidad | Tabla ISO/IEC 25010:2023 con medidas ISO/IEC 25023 | — | Subcaracterísticas con valor real | ⬜ |
-| CAL-07 | Enfoque preventivo | Quality gate en el CI + ruleset que exige el check `calidad` para integrar a main | E08a (demostración), E08, E08b | ≥ 1 bloqueo real en CI y su corrección (aún no ocurre) | 🟨 |
+| CAL-07 | Enfoque preventivo | Quality gate en el CI + ruleset que exige el check `calidad` para integrar a main | E08a, E08b, E08g, E17a–E17d (PR #42 bloqueado por CC 11, cerrado sin merge) | ≥ 1 bloqueo real en CI | ✅ |
 | CAL-08 | Carácter sistemático | Kanban + DoD + trazabilidad | E02, E02b | Requisito → issue → commit → evidencia | 🟨 |
 | MET-00 | Métricas aplicando IA | Cálculo determinista + IA que interpreta (Gemini) y 5 verificaciones de coherencia | E10h, E10i | Interpretación coherente con valores | ✅ |
 | MET-P1 | Complejidad ciclomática | `qualityops/product_metrics.py` (radon, por función; promedio, mediana, máximo, CC ≤ 10) | E07, 19d18b6, PR #28 | Coincide con `radon cc -s` por función | ✅ |
@@ -51,4 +51,4 @@
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | E00–E15c | E01–E14 con archivo y fecha | 🟨 (faltan E03, E13, E14) |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` (incluye errores de la IA y su corrección) | `docs/AI_LOG.md` | Entradas por sprint | ✅ |
 
-**Grado de cumplimiento actual:** 21 / 44 (47.7 %) Cumple · 11 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 23 / 44 (52.3 %) Cumple · 9 en progreso. Nada se marca Cumple hasta tener evidencia.
