@@ -6,6 +6,7 @@ coherentes entre sí (cobertura 80 = 8/10, KLOC 0.5, densidad 2.0 = 1/0.5).
 
 import json
 
+from qualityops import ai_advisor
 from qualityops.ai_advisor import analizar, cliente_desde_entorno, verificar_coherencia
 from qualityops.report import dictamen, estado_llm, generar_informe, main
 
@@ -84,7 +85,9 @@ def test_informe_tiene_todas_las_secciones():
 
 
 def test_main_escribe_archivos(tmp_path, monkeypatch):
+    # Sin llaves: la prueba no debe llamar a ninguna API real aunque el autor tenga una cargada.
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     (tmp_path / "metrics.json").write_text(json.dumps(metricas()), encoding="utf-8")
     (tmp_path / "gate.json").write_text(json.dumps(GATE_OK), encoding="utf-8")
     assert main(["--metricas", str(tmp_path / "metrics.json")]) == 0
@@ -103,6 +106,7 @@ def test_nombres_de_archivo_no_se_rompen_en_markdown():
 
 def test_sin_llave_no_hay_llm(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     assert cliente_desde_entorno() is None                      # sin IA -> ruta por reglas
 
 
@@ -118,3 +122,67 @@ def test_informe_explica_el_estado_del_llm():
     analisis = analizar(metricas(), GATE_OK, cliente=falla)
     assert "falló (ValueError: respuesta vacía)" in estado_llm(analisis)
     assert "Intento de LLM | falló" in generar_informe(metricas(), GATE_OK, analisis)
+
+
+def test_extraccion_de_texto_gemini():
+    assert ai_advisor.texto_de_respuesta_gemini({"output_text": "hola"}) == "hola"
+    datos = {"steps": [{"type": "user_input", "content": [{"text": "pregunta"}]},
+                       {"type": "model_output", "content": [{"type": "text", "text": "Parte 1"},
+                                                            {"type": "text", "text": "Parte 2"}]}]}
+    assert ai_advisor.texto_de_respuesta_gemini(datos) == "Parte 1\nParte 2"
+
+
+def test_cliente_gemini_sin_red(monkeypatch):
+    # Se simula la respuesta HTTP para no depender de la red ni de una llave real.
+    class Respuesta:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps({"steps": [{"type": "model_output", "content": [{"text": "Interpretación"}]}]}).encode()
+
+    enviado = {}
+
+    def falso_urlopen(peticion, timeout):
+        enviado["url"], enviado["llave"] = peticion.full_url, peticion.headers["X-goog-api-key"]
+        return Respuesta()
+
+    monkeypatch.setattr(ai_advisor.urllib.request, "urlopen", falso_urlopen)
+    monkeypatch.setenv("GEMINI_API_KEY", "llave-de-prueba")
+    resultado = analizar(metricas(), GATE_OK, cliente=ai_advisor.cliente_desde_entorno())
+    assert (resultado["fuente"], resultado["proveedor"], resultado["texto_llm"]) == ("llm", "gemini", "Interpretación")
+    assert enviado == {"url": ai_advisor.URL_GEMINI, "llave": "llave-de-prueba"}
+
+
+def test_gemini_reintenta_503_y_reporta_el_detalle(monkeypatch):
+    import io
+    import urllib.error
+
+    llamadas = []
+
+    def siempre_503(peticion, timeout):
+        llamadas.append(1)
+        raise urllib.error.HTTPError(peticion.full_url, 503, "Service Unavailable", {},
+                                     io.BytesIO(b'{"error": "model overloaded"}'))
+
+    monkeypatch.setattr(ai_advisor.urllib.request, "urlopen", siempre_503)
+    monkeypatch.setattr(ai_advisor, "ESPERA_BASE_S", 0)
+    r = analizar(metricas(), GATE_OK, cliente=ai_advisor.cliente_gemini("x"))
+    assert len(llamadas) == ai_advisor.REINTENTOS
+    assert r["fuente"] == "reglas" and "HTTP 503" in r["error_llm"] and "overloaded" in r["error_llm"]
+
+
+def test_gemini_tiempo_agotado_no_reintenta_y_lo_explica(monkeypatch):
+    llamadas = []
+
+    def lento(peticion, timeout):
+        llamadas.append(timeout)
+        raise TimeoutError("The read operation timed out")
+
+    monkeypatch.setattr(ai_advisor.urllib.request, "urlopen", lento)
+    r = analizar(metricas(), GATE_OK, cliente=ai_advisor.cliente_gemini("x"))
+    assert llamadas == [ai_advisor.TIMEOUT_GEMINI_S]            # un solo intento
+    assert r["fuente"] == "reglas" and "no respondió" in r["error_llm"]
