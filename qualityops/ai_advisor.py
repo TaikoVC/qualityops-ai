@@ -9,10 +9,12 @@ la IA NO calcula números, los interpreta. Por eso este módulo:
      (por ejemplo, que la cobertura global sea líneas ejecutadas / ejecutables).
   2. Interpreta cada métrica con REGLAS basadas en referencias publicadas
      (McCabe, Google Testing Blog, DORA, Jones). Es la ruta de respaldo.
-  3. Si hay un modelo de lenguaje disponible (variable ANTHROPIC_API_KEY y el
-     paquete `anthropic` instalado), le envía el resumen de métricas y las
-     verificaciones para que redacte la interpretación; si falla por cualquier
+  3. Si hay un modelo de lenguaje disponible, le envía el resumen de métricas y
+     las verificaciones para que redacte la interpretación; si falla por cualquier
      motivo, se usa la ruta por reglas (decisión D03: la app nunca se cae por la IA).
+     Proveedor: API de Anthropic (requiere ANTHROPIC_API_KEY y el paquete `anthropic`).
+     Nota (D18): se probó GitHub Models en el CI, pero el servicio fue retirado
+     por GitHub el 30 de julio de 2026; ese proveedor se eliminó.
 
 El resultado indica siempre su "fuente": "reglas" o "llm".
 """
@@ -25,7 +27,6 @@ from collections.abc import Callable
 
 # Modelo configurable sin tocar el código (variable de entorno opcional).
 MODELO_POR_DEFECTO = os.environ.get("QUALITYOPS_MODELO", "claude-sonnet-4-5")
-
 
 # --------------------------------------------------------------------------
 # 1. Verificaciones de coherencia (deterministas)
@@ -62,6 +63,12 @@ def _nivel(valor, cortes: list[tuple[float, str]], mayor_es_mejor=True) -> str:
     return "mejorable"
 
 
+def _como_codigo(nombres: list[str]) -> str:
+    """Nombres entre comillas invertidas: así el Markdown no convierte "__main__.py"
+    en negritas ("main.py"). Corrección del defecto encontrado en la revisión del PR #38."""
+    return ", ".join(f"`{n}`" for n in nombres)
+
+
 def _interp_producto(m: dict) -> list[dict]:
     cc, cob, den = m["producto"]["complejidad"], m["producto"]["cobertura"], m["producto"]["densidad"]
     salida = []
@@ -75,9 +82,7 @@ def _interp_producto(m: dict) -> list[dict]:
         salida.append({"metrica": "Cobertura de código",
                        "valoracion": _nivel(cob["global_pct"], [(90, "ejemplar"), (75, "encomiable"), (60, "aceptable")]),
                        "texto": f"{cob['global_pct']} % global (Google Testing Blog: 60 aceptable, 75 encomiable, 90 ejemplar)."
-                                # Los nombres van entre comillas invertidas para que el Markdown no
-                                # convierta "__main__.py" en negritas ("main.py").
-                                + (f" Archivos con menos de 60 %: {', '.join(f'`{b}`' for b in bajos)}." if bajos else "")})
+                                + (f" Archivos con menos de 60 %: {_como_codigo(bajos)}." if bajos else "")})
     texto_den = (f"{den['densidad_global']} defectos/KLOC con {den['n_defectos']} defectos registrados."
                  + (" Con n = 0 la densidad no demuestra ausencia de defectos; solo que ninguno se registró."
                     if den["n_defectos"] == 0 else ""))
@@ -155,12 +160,9 @@ def construir_prompt(m: dict, verificaciones: list[dict]) -> str:
             + json.dumps(verificaciones, ensure_ascii=False) + "\n\nMétricas:\n" + json.dumps(resumen, ensure_ascii=False))
 
 
-def cliente_desde_entorno() -> Callable[[str], str] | None:
-    """Devuelve una función prompt -> texto si hay llave y paquete; si no, None."""
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        return None
+def _cliente_anthropic() -> Callable[[str], str] | None:
     try:
-        import anthropic  # dependencia opcional: solo si se quiere usar un LLM
+        import anthropic  # dependencia opcional: solo si se quiere usar la API de Anthropic
     except ImportError:
         return None
     cliente = anthropic.Anthropic()
@@ -171,6 +173,13 @@ def cliente_desde_entorno() -> Callable[[str], str] | None:
         return respuesta.content[0].text
 
     return llamar
+
+
+def cliente_desde_entorno() -> Callable[[str], str] | None:
+    """Devuelve una función prompt -> texto si hay un LLM disponible; si no, None."""
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        return _cliente_anthropic()
+    return None
 
 
 def analizar(m: dict, gate: dict | None = None, cliente: Callable[[str], str] | None = None) -> dict:
