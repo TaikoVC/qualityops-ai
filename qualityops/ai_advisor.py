@@ -12,7 +12,10 @@ la IA NO calcula números, los interpreta. Por eso este módulo:
   3. Si hay un modelo de lenguaje disponible, le envía el resumen de métricas y
      las verificaciones para que redacte la interpretación; si falla por cualquier
      motivo, se usa la ruta por reglas (decisión D03: la app nunca se cae por la IA).
-     Proveedor: API de Anthropic (requiere ANTHROPIC_API_KEY y el paquete `anthropic`).
+     Proveedores (el primero que tenga llave):
+       - Gemini (Google AI Studio, nivel gratuito): variable GEMINI_API_KEY; se
+         llama a la API "Interactions" con la biblioteca estándar (decisión D19).
+       - Anthropic: variable ANTHROPIC_API_KEY y el paquete `anthropic`.
      Nota (D18): se probó GitHub Models en el CI, pero el servicio fue retirado
      por GitHub el 30 de julio de 2026; ese proveedor se eliminó.
 
@@ -23,10 +26,18 @@ from __future__ import annotations
 
 import json
 import os
+import time
+import urllib.error
+import urllib.request
 from collections.abc import Callable
 
 # Modelo configurable sin tocar el código (variable de entorno opcional).
 MODELO_POR_DEFECTO = os.environ.get("QUALITYOPS_MODELO", "claude-sonnet-4-5")
+MODELO_GEMINI = os.environ.get("QUALITYOPS_MODELO_GEMINI", "gemini-3.5-flash-lite")
+URL_GEMINI = "https://generativelanguage.googleapis.com/v1beta/interactions"
+REINTENTOS, ESPERA_BASE_S = 3, 5
+# Segundos máximos de espera por respuesta; configurable porque los modelos que "piensan" tardan más.
+TIMEOUT_GEMINI_S = int(os.environ.get("QUALITYOPS_TIMEOUT_S", "180"))
 
 # --------------------------------------------------------------------------
 # 1. Verificaciones de coherencia (deterministas)
@@ -160,6 +171,51 @@ def construir_prompt(m: dict, verificaciones: list[dict]) -> str:
             + json.dumps(verificaciones, ensure_ascii=False) + "\n\nMétricas:\n" + json.dumps(resumen, ensure_ascii=False))
 
 
+def texto_de_respuesta_gemini(datos: dict) -> str:
+    """Extrae el texto de la respuesta de la API Interactions de Gemini.
+
+    Usa `output_text` si viene; si no, junta los bloques de texto del último paso
+    con contenido (la documentación indica recorrer `steps`).
+    """
+    if datos.get("output_text"):
+        return datos["output_text"]
+    for paso in reversed(datos.get("steps", [])):
+        textos = [c["text"] for c in paso.get("content", []) if isinstance(c, dict) and c.get("text")]
+        if textos:
+            return "\n".join(textos)
+    raise ValueError("la respuesta de Gemini no trae texto")
+
+
+def cliente_gemini(llave: str) -> Callable[[str], str]:
+    """Cliente mínimo para Gemini usando solo la biblioteca estándar (sin dependencias nuevas)."""
+
+    def intentar(prompt: str) -> str:
+        cuerpo = json.dumps({"model": MODELO_GEMINI, "input": prompt}).encode("utf-8")
+        peticion = urllib.request.Request(URL_GEMINI, data=cuerpo, method="POST", headers={
+            "x-goog-api-key": llave, "Content-Type": "application/json"})
+        with urllib.request.urlopen(peticion, timeout=TIMEOUT_GEMINI_S) as respuesta:
+            return texto_de_respuesta_gemini(json.loads(respuesta.read().decode("utf-8")))
+
+    def llamar(prompt: str) -> str:
+        # 429 (límite de uso) y 503 (servicio saturado) suelen ser temporales: se reintenta
+        # hasta 3 veces con espera creciente. Cualquier otro error se reporta con su detalle.
+        for intento in range(REINTENTOS):
+            try:
+                return intentar(prompt)
+            except urllib.error.HTTPError as error:
+                detalle = error.read().decode("utf-8", "replace")[:300]
+                if error.code not in (429, 503) or intento == REINTENTOS - 1:
+                    raise RuntimeError(f"HTTP {error.code} de Gemini: {detalle}") from error
+                time.sleep(ESPERA_BASE_S * (intento + 1))
+            except TimeoutError as error:
+                # Un tiempo agotado no se reintenta: repetirlo multiplicaría la espera del pipeline.
+                raise RuntimeError(f"Gemini ({MODELO_GEMINI}) no respondió en {TIMEOUT_GEMINI_S} s; "
+                                   "prueba un modelo más rápido con QUALITYOPS_MODELO_GEMINI") from error
+        raise RuntimeError("Gemini no respondió")  # no se alcanza; deja claro el contrato
+
+    return llamar
+
+
 def _cliente_anthropic() -> Callable[[str], str] | None:
     try:
         import anthropic  # dependencia opcional: solo si se quiere usar la API de Anthropic
@@ -177,6 +233,8 @@ def _cliente_anthropic() -> Callable[[str], str] | None:
 
 def cliente_desde_entorno() -> Callable[[str], str] | None:
     """Devuelve una función prompt -> texto si hay un LLM disponible; si no, None."""
+    if os.environ.get("GEMINI_API_KEY"):
+        return cliente_gemini(os.environ["GEMINI_API_KEY"])
     if os.environ.get("ANTHROPIC_API_KEY"):
         return _cliente_anthropic()
     return None
@@ -192,7 +250,8 @@ def analizar(m: dict, gate: dict | None = None, cliente: Callable[[str], str] | 
         try:
             texto = cliente(prompt)
             if texto and texto.strip():
-                resultado.update(fuente="llm", texto_llm=texto.strip(), prompt=prompt)
+                proveedor = "gemini" if os.environ.get("GEMINI_API_KEY") else "anthropic"
+                resultado.update(fuente="llm", texto_llm=texto.strip(), prompt=prompt, proveedor=proveedor)
         except Exception as error:  # noqa: BLE001  cualquier fallo de la IA -> se queda la ruta por reglas
             resultado["error_llm"] = f"{type(error).__name__}: {error}"
     return resultado
