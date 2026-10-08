@@ -75,7 +75,9 @@ def _interp_producto(m: dict) -> list[dict]:
         salida.append({"metrica": "Cobertura de código",
                        "valoracion": _nivel(cob["global_pct"], [(90, "ejemplar"), (75, "encomiable"), (60, "aceptable")]),
                        "texto": f"{cob['global_pct']} % global (Google Testing Blog: 60 aceptable, 75 encomiable, 90 ejemplar)."
-                                + (f" Archivos con menos de 60 %: {', '.join(bajos)}." if bajos else "")})
+                                # Los nombres van entre comillas invertidas para que el Markdown no
+                                # convierta "__main__.py" en negritas ("main.py").
+                                + (f" Archivos con menos de 60 %: {', '.join(f'`{b}`' for b in bajos)}." if bajos else "")})
     texto_den = (f"{den['densidad_global']} defectos/KLOC con {den['n_defectos']} defectos registrados."
                  + (" Con n = 0 la densidad no demuestra ausencia de defectos; solo que ninguno se registró."
                     if den["n_defectos"] == 0 else ""))

@@ -90,3 +90,11 @@ def test_main_escribe_archivos(tmp_path, monkeypatch):
     assert main(["--metricas", str(tmp_path / "metrics.json")]) == 0
     assert "Dictamen: LIBERAR" in (tmp_path / "quality_report.md").read_text(encoding="utf-8")
     assert json.loads((tmp_path / "ai_analysis.json").read_text(encoding="utf-8"))["fuente"] == "reglas"
+
+
+def test_nombres_de_archivo_no_se_rompen_en_markdown():
+    # Defecto real encontrado al revisar el PR #38: "__main__.py" se mostraba como **main.py**.
+    m = metricas()
+    m["producto"]["cobertura"]["por_archivo"] = [{"archivo": "qualityops/__main__.py", "pct": 0.0}]
+    texto = generar_informe(m, GATE_OK, analizar(m, GATE_OK))
+    assert "`qualityops/__main__.py`" in texto
