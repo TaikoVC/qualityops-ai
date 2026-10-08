@@ -13,6 +13,9 @@ criterio NO se cumple: sin evidencia no se aprueba.
 
 Uso (después de generar metrics.json con `python -m qualityops`):
     python -m qualityops.quality_gate --metricas reports/metrics.json
+
+En GitHub Actions se agrega `--resumen "$GITHUB_STEP_SUMMARY"` para que el
+dictamen aparezca como tabla en la página de cada ejecución del pipeline.
 """
 
 from __future__ import annotations
@@ -62,11 +65,29 @@ def evaluar(metricas: dict, umbrales: dict) -> dict:
             "umbrales": umbrales, "criterios": criterios}
 
 
+def resumen_markdown(resultado: dict, metricas: dict) -> str:
+    """Tabla Markdown con el dictamen (se muestra en el resumen de GitHub Actions)."""
+    dictamen = "✅ APROBADO" if resultado["aprobado"] else "❌ BLOQUEADO"
+    filas = [f"| {'✅' if c['cumple'] else '❌'} | {c['criterio']} | {c['valor']} | {c['umbral']} |"
+             for c in resultado["criterios"]]
+    return "\n".join([
+        f"## Quality gate — {dictamen}",
+        "",
+        f"Repositorio `{metricas.get('repo')}` · commit `{metricas.get('commit')}`",
+        "",
+        "| | Criterio | Valor | Umbral |",
+        "|---|---|---|---|",
+        *filas,
+        "",
+    ])
+
+
 def main(argv: list[str] | None = None) -> int:
     """Imprime el resultado y devuelve 0 (aprobado) o 1 (bloqueado)."""
     parser = argparse.ArgumentParser(description="Quality gate de QualityOps AI.")
     parser.add_argument("--metricas", default="reports/metrics.json", help="Ruta de metrics.json.")
     parser.add_argument("--config", default="pyproject.toml", help="Ruta de pyproject.toml con los umbrales.")
+    parser.add_argument("--resumen", help="Archivo Markdown donde AGREGAR la tabla del dictamen (p. ej. $GITHUB_STEP_SUMMARY).")
     args = parser.parse_args(argv)
 
     ruta_metricas = Path(args.metricas)
@@ -82,6 +103,9 @@ def main(argv: list[str] | None = None) -> int:
     # Se guarda junto a metrics.json para que el informe de calidad lo use.
     (ruta_metricas.parent / "gate.json").write_text(
         json.dumps(resultado, indent=2, ensure_ascii=False), encoding="utf-8")
+    if args.resumen:
+        with open(args.resumen, "a", encoding="utf-8") as archivo:
+            archivo.write(resumen_markdown(resultado, metricas))
     return 0 if resultado["aprobado"] else 1
 
 

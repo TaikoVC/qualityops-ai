@@ -6,7 +6,7 @@ que cada criterio bloquea por sí solo.
 
 import json
 
-from qualityops.quality_gate import evaluar, leer_umbrales, main
+from qualityops.quality_gate import evaluar, leer_umbrales, main, resumen_markdown
 
 UMBRALES = {"cobertura_minima": 75.0, "complejidad_maxima": 10}
 
@@ -60,3 +60,14 @@ def test_codigo_de_salida_y_gate_json(tmp_path):
     assert main(["--metricas", str(ruta), "--config", str(tmp_path / "x.toml")]) == 1
     gate = json.loads((tmp_path / "gate.json").read_text(encoding="utf-8"))
     assert gate["aprobado"] is False
+
+
+def test_resumen_markdown_para_github(tmp_path):
+    ruta = tmp_path / "metrics.json"
+    ruta.write_text(json.dumps(metricas()), encoding="utf-8")
+    resumen = tmp_path / "resumen.md"
+    assert main(["--metricas", str(ruta), "--config", str(tmp_path / "x.toml"), "--resumen", str(resumen)]) == 0
+    texto = resumen.read_text(encoding="utf-8")
+    assert "APROBADO" in texto
+    assert texto.count("| ✅ |") == 3
+    assert "BLOQUEADO" in resumen_markdown(evaluar(metricas(cc_max=20), UMBRALES), {})
