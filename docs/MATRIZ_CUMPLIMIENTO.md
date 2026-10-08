@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-06 12:55 — T09 (PR #33) y T10 (PR #34, ffb14d0) integrados: quality gate local.
+> Última actualización: 2026-10-08 00:30 — T11 integrado (PR #35, 00517a7): CI en GitHub Actions y protección de main.
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -15,9 +15,9 @@
 | DOC-07 | Plantilla UTCJ + referencias | `PlantillaInvestigacion.docx` | — | Formato respetado; referencias APA | ⬜ |
 | DOC-08 | Trabajo individual | Repo personal | E01 (1 contribuidor) | Un solo autor en `git shortlog -s` | 🟨 |
 | DOC-09 | Normas aplicadas, claras y puntuales | `docs/NORMAS.md`: norma → qué establece → cómo se aplicó → evidencia | — | Cada norma citada tiene aplicación y evidencia; versiones vigentes | 🟨 |
-| PRG-01 | Tecnologías DevOps | GitHub Actions + quality gates | E08 | Workflow en cada push | ⬜ |
+| PRG-01 | Tecnologías DevOps | GitHub Actions (`.github/workflows/ci.yml`) en cada PR y push a main + quality gate + ruleset `proteger-main` | E08, E08b, E08e, PR #35 | Workflow corre en cada PR/push | ✅ |
 | PRG-02 | IA en frameworks | `ai_advisor.py` + `AI_LOG.md` | E10 | Entrada y salida de IA visibles | ⬜ |
-| PRG-03 | Automatización | Pipeline lint→test→análisis→gate→informe | E08 | Pasos visibles en log | ⬜ |
+| PRG-03 | Automatización | Pipeline ruff → pruebas/métricas → quality gate → resumen en Actions → artefacto | E08, E08c, E08d | Pasos visibles en el log | ✅ |
 | PRG-04 | Validación de software | pytest + ruff | E05, E05b | Pruebas verdes, ruff limpio | 🟨 |
 | PRG-05 | GitHub + repositorio | Repo + README + issues | E00, E00c, E01, 9823160 | URL accesible, README reproducible | 🟨 (falta sección Uso del README) |
 | PRG-06 | Ejecución y salida | CLI `python -m qualityops` → `reports/metrics.json` (hecho, T08) + dashboard Streamlit (pendiente, T18) | E04, E04b | Salida real visible en CLI y dashboard | 🟨 |
@@ -28,9 +28,9 @@
 | CAL-02 | Informe de calidad en formato | `report.py` → `quality_report.md` con formato fijo ISO/IEC/IEEE 29119-3 + dictamen | — | Generado en local y en CI; incluye todas las secciones del formato | ⬜ |
 | CAL-03 | Requisitos explícitos | Tabla RF/RNF | — | ID, descripción, prioridad, criterio | ⬜ |
 | CAL-04 | Requisitos de usuario y negocio | Historia + expectativas | — | ≥ 1 historia, ≥ 3 expectativas medibles | ⬜ |
-| CAL-05 | Aseguramiento de calidad | Pruebas + lint + CI + revisión | E05, E08 | Pipeline verde en v1.0 | ⬜ |
+| CAL-05 | Aseguramiento de calidad | Pruebas + ruff + revisión por PR + CI + quality gate | E05, E05b, E08 | Pipeline verde en v1.0 | 🟨 |
 | CAL-06 | Idoneidad funcional y fiabilidad | Tabla ISO/IEC 25010:2023 con medidas ISO/IEC 25023 | — | Subcaracterísticas con valor real | ⬜ |
-| CAL-07 | Enfoque preventivo | `qualityops/quality_gate.py` + umbrales en `pyproject.toml` (cobertura ≥ 75 %, CC ≤ 10, 0 pruebas fallidas); falta conectarlo al CI y a la protección de `main` (T11) | E08a (bloqueo con umbral de demostración) | ≥ 1 bloqueo real en CI y su corrección | 🟨 |
+| CAL-07 | Enfoque preventivo | Quality gate en el CI + ruleset que exige el check `calidad` para integrar a main | E08a (demostración), E08, E08b | ≥ 1 bloqueo real en CI y su corrección (aún no ocurre) | 🟨 |
 | CAL-08 | Carácter sistemático | Kanban + DoD + trazabilidad | E02, E02b | Requisito → issue → commit → evidencia | 🟨 |
 | MET-00 | Métricas aplicando IA | Cálculo determinista + IA interpreta/verifica | E10 | Interpretación coherente con valores | ⬜ |
 | MET-P1 | Complejidad ciclomática | `qualityops/product_metrics.py` (radon, por función; promedio, mediana, máximo, CC ≤ 10) | E07, 19d18b6, PR #28 | Coincide con `radon cc -s` por función | ✅ |
@@ -51,4 +51,4 @@
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | — | E01–E14 con archivo y fecha | ⬜ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` | — | Entradas por sprint | 🟨 |
 
-**Grado de cumplimiento actual:** 3 / 44 (6.8 %) Cumple · 17 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 5 / 44 (11.4 %) Cumple · 18 en progreso. Nada se marca Cumple hasta tener evidencia.

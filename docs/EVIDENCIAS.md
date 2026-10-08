@@ -19,7 +19,11 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E06 | Cobertura de QualityOps vs. `coverage report` (coinciden por archivo; global 80.62 %) | `evidence/E06_cobertura_vs_coverage_T05_2026-10-05.png` | 2026-10-05 ~10:40 | 6ad52ac | MET-P2 |
 | E07 | Complejidad por función de QualityOps vs. `radon cc -s` (7/7 coinciden) | `evidence/E07_complejidad_vs_radon_T04_2026-10-05.png` | 2026-10-05 ~10:20 | 19d18b6 | MET-P1 |
 | E08a | Quality gate local: con umbral de DEMOSTRACIÓN (cobertura ≥ 95 %) → BLOQUEADO, código 1; con umbral real (≥ 75 %) → APROBADO, código 0. CLI: 24/24 pruebas, cobertura 83.52 %, CC máx. 9, 0.5 KLOC | `evidence/E08a_cli_T09T10_2026-10-06_1240.png`, `evidence/E08a_gate_demo_y_real_2026-10-06_1240.png` | 2026-10-06 ~12:40 | 8d4f922 + cambios de T09/T10 | CAL-07, PRG-04 |
-| E08 | GitHub Actions (verde y bloqueo corregido) | | | | PRG-01, PRG-03, CAL-07 |
+| E08 | GitHub Actions, PR #35: job `calidad` en verde (34 s) y resumen del quality gate APROBADO (25/25 pruebas, cobertura 83.88 %, CC máx. 9) | `evidence/E08_actions_summary_gate_T11_2026-10-08_0010.png` | 2026-10-08 ~00:10 | 6f91847 | PRG-01, PRG-03, CAL-05 |
+| E08b | Ruleset `proteger-main` activo (4 reglas: PR obligatorio, check `calidad` obligatorio, sin force push) | `evidence/E08b_ruleset_proteger_main_2026-10-08_0020.png` | 2026-10-08 ~00:20 | — | CAL-07 |
+| E08c | Artefacto `reportes-calidad` publicado por el pipeline | `evidence/E08c_actions_artefacto_T11_2026-10-08_0010.png` | 2026-10-08 ~00:10 | 6f91847 | PRG-03 |
+| E08d | Log del pipeline paso a paso (ruff, métricas: 0.518 KLOC en 8 archivos, 0 defectos; gate; artefacto) | `evidence/E08d_actions_pasos_log_T11_2026-10-08_0010.png` | 2026-10-08 ~00:10 | 6f91847 | PRG-03, PRG-06 |
+| E08e | `gh pr checks --watch`: 1 check exitoso | `evidence/E08e_gh_pr_checks_T11_2026-10-08_0010.png` | 2026-10-08 ~00:10 | 6f91847 | PRG-01 |
 | E09 | Dashboard | | | | PRG-06 |
 | E10 | AI Advisor: entrada y salida | | | | PRG-02, MET-00 |
 | E11 | Minería de defectos sobre el propio repo: 8 commits, 3 merges, 0 tags, 0 defectos (aún no hay commits `fix:`); 13/13 pruebas | `evidence/E11_mineria_defectos_T06_2026-10-05_2115.png` | 2026-10-05 21:15 | a7f8d76 | MET-P3, MET-R1..R3, MET-J1 |

@@ -20,7 +20,9 @@ from qualityops import __version__
 from qualityops.coverage_metrics import medir_cobertura
 from qualityops.defects import minar_defectos
 from qualityops.density import calcular_densidad
+from qualityops.process_metrics import calcular_proceso
 from qualityops.product_metrics import analizar_complejidad, contar_lineas
+from qualityops.project_metrics import calcular_proyecto
 
 
 def _commit_actual(repo: Path) -> str | None:
@@ -48,6 +50,8 @@ def recolectar_metricas(repo: Path) -> dict:
             "densidad": calcular_densidad(defectos, lineas),
         },
         "pruebas": pruebas_y_cobertura["pruebas"],
+        "proceso": calcular_proceso(defectos),
+        "proyecto": calcular_proyecto(defectos, repo),
         "defectos": defectos,
     }
 
@@ -70,6 +74,11 @@ def _resumen(m: dict) -> str:
         f"  Complejidad:   promedio {prod['complejidad']['promedio']} · máximo {prod['complejidad']['maximo']}",
         f"  Tamaño:        {prod['lineas']['kloc']} KLOC en {prod['lineas']['n_archivos']} archivos",
         f"  Defectos:      {m['defectos']['n_defectos']} · densidad {prod['densidad']['densidad_global']} def/KLOC",
+        (f"  MTTD / MTTR:   {m['proceso']['mttd']['promedio_h']} h / {m['proceso']['mttr']['promedio_h']} h "
+         f"(n = {m['proceso']['mttd']['n']} / {m['proceso']['mttr']['n']})"),
+        (f"  Desviación:    {m['proyecto']['desviacion']['desviacion_pct']} % "
+         f"({m['proyecto']['desviacion']['tareas_terminadas']} tareas terminadas)"),
+        f"  Plazos:        {m['proyecto']['plazos']['pct_a_tiempo']} % a tiempo",
     ])
 
 
