@@ -7,7 +7,7 @@ coherentes entre sí (cobertura 80 = 8/10, KLOC 0.5, densidad 2.0 = 1/0.5).
 import json
 
 from qualityops.ai_advisor import analizar, cliente_desde_entorno, verificar_coherencia
-from qualityops.report import dictamen, generar_informe, main
+from qualityops.report import dictamen, estado_llm, generar_informe, main
 
 
 def metricas(n_defectos=1):
@@ -104,3 +104,17 @@ def test_nombres_de_archivo_no_se_rompen_en_markdown():
 def test_sin_llave_no_hay_llm(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     assert cliente_desde_entorno() is None                      # sin IA -> ruta por reglas
+
+
+def test_informe_explica_el_estado_del_llm():
+    # Defecto real encontrado al revisar el PR #39: el informe decía "reglas" sin
+    # explicar que el LLM se intentó y falló.
+    assert estado_llm(analizar(metricas())).startswith("no configurado")
+    assert estado_llm(analizar(metricas(), cliente=lambda p: "texto")).startswith("usado")
+
+    def falla(prompt):
+        raise ValueError("respuesta vacía")
+
+    analisis = analizar(metricas(), GATE_OK, cliente=falla)
+    assert "falló (ValueError: respuesta vacía)" in estado_llm(analisis)
+    assert "Intento de LLM | falló" in generar_informe(metricas(), GATE_OK, analisis)

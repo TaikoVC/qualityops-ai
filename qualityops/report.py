@@ -36,6 +36,15 @@ def dictamen(gate: dict | None, analisis: dict) -> str:
     return "LIBERAR CON CONDICIONES" if hay_huecos or incoherente else "LIBERAR"
 
 
+def estado_llm(analisis: dict) -> str:
+    """Explica qué pasó con la IA generativa: usada, falló (y por qué) o no configurada."""
+    if analisis["fuente"] == "llm":
+        return "usado: la interpretación la redactó el modelo de lenguaje"
+    if analisis.get("error_llm"):
+        return f"falló ({analisis['error_llm']}); se usó la ruta por reglas"
+    return "no configurado (sin llave de API); se usó la ruta por reglas"
+
+
 def _tabla(cabeceras: list[str], filas: list[list]) -> list[str]:
     lineas = ["| " + " | ".join(cabeceras) + " |", "|" + "---|" * len(cabeceras)]
     lineas += ["| " + " | ".join("—" if v is None else str(v) for v in f) + " |" for f in filas]
@@ -100,6 +109,7 @@ def generar_informe(m: dict, gate: dict | None, analisis: dict) -> str:
         ["Proyecto", m["repo"]], ["Commit analizado", m["commit"]], ["Fecha de generación", m["generado"]],
         ["Herramienta", f"{m['herramienta']['nombre']} {m['herramienta']['version']}"],
         ["Fuente de la interpretación", analisis["fuente"]],
+        ["Intento de LLM", estado_llm(analisis)],
     ])
     out += ["## 2. Resumen y dictamen de liberación", "", f"**Dictamen: {estado}**", ""]
     out += [f"- {r}" for r in analisis["recomendaciones"]] + [""]

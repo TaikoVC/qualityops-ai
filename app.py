@@ -15,6 +15,7 @@ from qualityops.dashboard import (
     tabla_desviacion,
     tabla_estimacion,
 )
+from qualityops.report import estado_llm
 
 CARPETA = Path(os.environ.get("QUALITYOPS_REPORTS", "reports"))
 MATRIZ = Path(os.environ.get("QUALITYOPS_MATRIZ", "docs/MATRIZ_CUMPLIMIENTO.md"))
@@ -38,8 +39,9 @@ with resumen:
         st.dataframe(gate["criterios"], use_container_width=True)
     matriz = resumen_matriz(MATRIZ)
     st.subheader("Grado de cumplimiento de los requisitos")
-    st.metric("Requisitos que cumplen", f"{matriz['por_estado'].get('Cumple', 0)} / {matriz['total']}",
-              f"{matriz['pct_cumple']} %")
+    # Sin "delta": la flecha de Streamlit indica un cambio, y aquí es un porcentaje fijo.
+    st.metric("Requisitos que cumplen", f"{matriz['por_estado'].get('Cumple', 0)} / {matriz['total']} "
+              f"({matriz['pct_cumple']} %)")
     st.bar_chart(matriz["por_estado"])
     st.dataframe(matriz["filas"], use_container_width=True)
 
@@ -84,6 +86,7 @@ with tab_ia:
         st.info("Ejecuta  python -m qualityops.report  para generar la interpretación.")
     else:
         st.subheader(f"Interpretación (fuente: {ia['fuente']})")
+        st.caption(f"Intento de LLM: {estado_llm(ia)}")
         for i in ia["interpretaciones"]:
             st.markdown(f"- **{i['metrica']}** ({i['valoracion']}): {i['texto']}")
         if ia.get("texto_llm"):
