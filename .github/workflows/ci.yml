@@ -1,0 +1,52 @@
+# Pipeline de integración continua de QualityOps AI (T11).
+# Se ejecuta en cada push a main y en cada Pull Request hacia main.
+# Si el quality gate bloquea, el job termina en rojo y (con la protección de
+# la rama main activada) GitHub impide hacer el merge del PR.
+name: CI - QualityOps
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  calidad:
+    name: calidad
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código con TODO el historial (la minería SZZ lo necesita)
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          # En un PR se analiza la rama tal como está, no el merge temporal que crea GitHub.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Instalar Python 3.14 (misma versión que el equipo de desarrollo)
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Instalar dependencias fijadas
+        run: python -m pip install -r requirements.txt
+
+      - name: Revisión automática de código (ruff)
+        run: ruff check .
+
+      - name: Pruebas, cobertura, complejidad y defectos (genera reports/metrics.json)
+        run: python -m qualityops --repo . --salida reports
+
+      - name: Quality gate (bloquea si no se cumplen los umbrales)
+        run: python -m qualityops.quality_gate --metricas reports/metrics.json --resumen "$GITHUB_STEP_SUMMARY"
+
+      - name: Publicar los resultados como artefacto descargable
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes-calidad
+          path: reports/
+          if-no-files-found: warn

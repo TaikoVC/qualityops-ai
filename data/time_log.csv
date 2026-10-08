@@ -7,8 +7,8 @@ T05,Cobertura de código (pytest-cov),product_metrics,MET-P2,0.5,0.75,1.5,S1A,#5
 T06,Minería de defectos SZZ adaptada (git + trailers),defects,MET-P3;MET-R1;MET-R2;MET-R3;MET-J1,0.75,1.25,2.5,S1B,#6,2026-10-05 21:13,2026-10-05 21:22,0.15,S1B,#30 (merge 38ea0c8),"Fin = hora del merge commit. Código adaptado con IA antes del inicio (incluye 2 correcciones en el entorno de la IA, ver AI_LOG); el tiempo mide integración, verificación y PR"
 T07,Densidad de defectos,product_metrics,MET-P3,0.25,0.25,0.5,S1B,#7,2026-10-05 21:29,2026-10-05 21:35,0.10,S1B,#31 (merge 2e9abd5),"Fin = hora del merge commit. Código generado con IA antes del inicio; el tiempo mide integración, verificación (SLOC vs radon raw) y PR"
 T08,CLI python -m qualityops y metrics.json,cli,PRG-06,0.5,0.75,1.5,S1B,#8,2026-10-06 12:20,2026-10-06 12:31,0.18,S1B,#32 (merge 454864e),"Fin = hora del merge commit. Código generado con IA antes del inicio; el tiempo mide integración, verificación (consistencia interna de metrics.json) y PR"
-T09,Configuración ruff/pytest/coverage (pyproject),quality_gate,PRG-04,0.25,0.25,0.5,S1B,,,,,,,
-T10,Quality gate con umbrales,quality_gate,CAL-07,0.5,0.75,1.5,S1C,,,,,,,
+T09,Configuración ruff/pytest/coverage (pyproject),quality_gate,PRG-04,0.25,0.25,0.5,S1B,#9,2026-10-06 12:36,2026-10-06 12:50,0.06,S1B,#33 (merge 7f7f38e),"Bloque conjunto T09+T10 de 12:36 a 12:50 (0.23 h; verificación única para ambas); real repartido en proporción a la estimación (0.25/0.75), como en D11. Código generado con IA antes del inicio"
+T10,Quality gate con umbrales,quality_gate,CAL-07,0.5,0.75,1.5,S1C,#10,2026-10-06 12:36,2026-10-06 12:50,0.17,S1C,#34 (merge ffb14d0),"Bloque conjunto T09+T10 de 12:36 a 12:50 (0.23 h; verificación única para ambas); real repartido en proporción a la estimación (0.25/0.75), como en D11. Código generado con IA antes del inicio"
 T11,Pipeline GitHub Actions,ci,PRG-01;PRG-03,0.5,1.0,2.0,S1C,,,,,,,
 T12,Informe de calidad (formato ISO/IEC/IEEE 29119-3),report,CAL-02,0.5,0.75,1.5,S1D,,,,,,,
 T13,"MTTD, MTTR y eficacia de pruebas",process_metrics,MET-R1;MET-R2;MET-R3,0.5,0.75,1.5,S2A,,,,,,,

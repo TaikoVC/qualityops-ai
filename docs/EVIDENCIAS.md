@@ -18,6 +18,7 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E05b | Salida de pytest (8/8) y ruff limpio — T05 | `evidence/E05b_pytest_ruff_T05_2026-10-05.png` | 2026-10-05 ~10:40 | 6ad52ac | PRG-04, CAL-05 |
 | E06 | Cobertura de QualityOps vs. `coverage report` (coinciden por archivo; global 80.62 %) | `evidence/E06_cobertura_vs_coverage_T05_2026-10-05.png` | 2026-10-05 ~10:40 | 6ad52ac | MET-P2 |
 | E07 | Complejidad por función de QualityOps vs. `radon cc -s` (7/7 coinciden) | `evidence/E07_complejidad_vs_radon_T04_2026-10-05.png` | 2026-10-05 ~10:20 | 19d18b6 | MET-P1 |
+| E08a | Quality gate local: con umbral de DEMOSTRACIÓN (cobertura ≥ 95 %) → BLOQUEADO, código 1; con umbral real (≥ 75 %) → APROBADO, código 0. CLI: 24/24 pruebas, cobertura 83.52 %, CC máx. 9, 0.5 KLOC | `evidence/E08a_cli_T09T10_2026-10-06_1240.png`, `evidence/E08a_gate_demo_y_real_2026-10-06_1240.png` | 2026-10-06 ~12:40 | 8d4f922 + cambios de T09/T10 | CAL-07, PRG-04 |
 | E08 | GitHub Actions (verde y bloqueo corregido) | | | | PRG-01, PRG-03, CAL-07 |
 | E09 | Dashboard | | | | PRG-06 |
 | E10 | AI Advisor: entrada y salida | | | | PRG-02, MET-00 |

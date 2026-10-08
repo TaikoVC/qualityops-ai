@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-06 12:40 — T08 integrado (PR #32, 454864e): CLI y metrics.json.
+> Última actualización: 2026-10-06 12:55 — T09 (PR #33) y T10 (PR #34, ffb14d0) integrados: quality gate local.
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -30,7 +30,7 @@
 | CAL-04 | Requisitos de usuario y negocio | Historia + expectativas | — | ≥ 1 historia, ≥ 3 expectativas medibles | ⬜ |
 | CAL-05 | Aseguramiento de calidad | Pruebas + lint + CI + revisión | E05, E08 | Pipeline verde en v1.0 | ⬜ |
 | CAL-06 | Idoneidad funcional y fiabilidad | Tabla ISO/IEC 25010:2023 con medidas ISO/IEC 25023 | — | Subcaracterísticas con valor real | ⬜ |
-| CAL-07 | Enfoque preventivo | Quality gate bloqueante | E08 | ≥ 1 bloqueo real y su corrección | ⬜ |
+| CAL-07 | Enfoque preventivo | `qualityops/quality_gate.py` + umbrales en `pyproject.toml` (cobertura ≥ 75 %, CC ≤ 10, 0 pruebas fallidas); falta conectarlo al CI y a la protección de `main` (T11) | E08a (bloqueo con umbral de demostración) | ≥ 1 bloqueo real en CI y su corrección | 🟨 |
 | CAL-08 | Carácter sistemático | Kanban + DoD + trazabilidad | E02, E02b | Requisito → issue → commit → evidencia | 🟨 |
 | MET-00 | Métricas aplicando IA | Cálculo determinista + IA interpreta/verifica | E10 | Interpretación coherente con valores | ⬜ |
 | MET-P1 | Complejidad ciclomática | `qualityops/product_metrics.py` (radon, por función; promedio, mediana, máximo, CC ≤ 10) | E07, 19d18b6, PR #28 | Coincide con `radon cc -s` por función | ✅ |
@@ -51,4 +51,4 @@
 | PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | — | E01–E14 con archivo y fecha | ⬜ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` | — | Entradas por sprint | 🟨 |
 
-**Grado de cumplimiento actual:** 3 / 44 (6.8 %) Cumple · 16 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 3 / 44 (6.8 %) Cumple · 17 en progreso. Nada se marca Cumple hasta tener evidencia.
