@@ -15,3 +15,19 @@ target-version = "py311"
 cobertura_minima = 75.0
 # Complejidad: ninguna función puede superar CC 10 = bajo riesgo según McCabe (1976).
 complejidad_maxima = 10
+
+[tool.qualityops.calendario]
+# Fecha planeada de cada sprint (plan maestro). Las métricas de plazos comparan
+# contra esta fecha la fecha REAL de cierre de cada tarea (data/time_log.csv).
+S0 = "2026-10-04"
+S1A = "2026-10-05"
+S1B = "2026-10-05"
+S1C = "2026-10-05"
+S1D = "2026-10-05"
+S2A = "2026-10-06"
+S2B = "2026-10-06"
+S2C = "2026-10-06"
+S2D = "2026-10-06"
+S3A = "2026-10-07"
+S3B = "2026-10-07"
+S3C = "2026-10-07"
