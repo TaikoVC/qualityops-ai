@@ -1,0 +1,110 @@
+{
+  "_descripcion": "Datos de entrada de las técnicas de estimación EST-2 (análoga) y EST-4 (puntos de función). EST-1 y EST-3 salen de data/time_log.csv. Un valor null significa 'sin dato': esa técnica no se calcula.",
+  "puntos_de_funcion": {
+    "_metodo": "IFPUG / ISO/IEC 20926: puntos de función SIN AJUSTAR (no se aplica factor de ajuste VAF). Conteo propuesto sobre el alcance de la línea base; validado por el autor.",
+    "conteo": [
+      {
+        "tipo": "EI",
+        "complejidad": "baja",
+        "cantidad": 2,
+        "funciones": "Ejecutar análisis (python -m qualityops --repo --salida); ejecutar quality gate (--metricas --config)"
+      },
+      {
+        "tipo": "EO",
+        "complejidad": "media",
+        "cantidad": 4,
+        "funciones": "metrics.json con métricas derivadas; dictamen del quality gate + resumen en Actions; informe de calidad; interpretación del AI Advisor"
+      },
+      {
+        "tipo": "EO",
+        "complejidad": "media",
+        "cantidad": 5,
+        "funciones": "Vistas del dashboard: resumen/cumplimiento, producto, proceso, proyecto, estimación"
+      },
+      {
+        "tipo": "EQ",
+        "complejidad": "baja",
+        "cantidad": 4,
+        "funciones": "Consultas por módulo: complejidad/LOC, cobertura, defectos, densidad"
+      },
+      {
+        "tipo": "ILF",
+        "complejidad": "baja",
+        "cantidad": 1,
+        "funciones": "reports/ (metrics.json + gate.json), mantenido por la herramienta"
+      },
+      {
+        "tipo": "EIF",
+        "complejidad": "media",
+        "cantidad": 1,
+        "funciones": "Historial de Git (commits, merges, tags, blame)"
+      },
+      {
+        "tipo": "EIF",
+        "complejidad": "baja",
+        "cantidad": 4,
+        "funciones": "Reportes de pytest/coverage; data/time_log.csv; pyproject.toml (umbrales y calendario); data/estimacion.json"
+      }
+    ],
+    "horas_por_pf": null,
+    "_fuente_horas_por_pf": "null = el programa usa la tasa del proyecto de referencia: 4.5 h / 103 PF ≈ 0.0437 h/PF (desarrollo asistido por IA). Sin factor de ajuste: así EST-4 mide solo tamaño × productividad y EST-2 agrega el ajuste por diferencias."
+  },
+  "analoga": {
+    "nombre": "Herramienta CLI 'metricas' aplicada a docker/secrets-engine (desarrollada por el autor con IA, sept. 2026)",
+    "horas_reales": 4.5,
+    "pf": 103,
+    "conteo_referencia": [
+      {
+        "tipo": "EI",
+        "complejidad": "baja",
+        "cantidad": 1,
+        "funciones": "Opciones de ejecución (--ref, --salida, --refrescar, --rapido)"
+      },
+      {
+        "tipo": "EO",
+        "complejidad": "media",
+        "cantidad": 9,
+        "funciones": "9 comandos de métrica con tabla, JSON, Markdown y gráfico"
+      },
+      {
+        "tipo": "EO",
+        "complejidad": "alta",
+        "cantidad": 1,
+        "funciones": "metricas todo: resumen, tablero y esquemas"
+      },
+      {
+        "tipo": "EO",
+        "complejidad": "baja",
+        "cantidad": 1,
+        "funciones": "metricas lint"
+      },
+      {
+        "tipo": "EQ",
+        "complejidad": "baja",
+        "cantidad": 1,
+        "funciones": "metricas doctor"
+      },
+      {
+        "tipo": "ILF",
+        "complejidad": "baja",
+        "cantidad": 2,
+        "funciones": "Caché defectos.json; carpeta metricas_resultados"
+      },
+      {
+        "tipo": "EIF",
+        "complejidad": "media",
+        "cantidad": 1,
+        "funciones": "Historial de Git"
+      },
+      {
+        "tipo": "EIF",
+        "complejidad": "baja",
+        "cantidad": 4,
+        "funciones": "go.work/go.mod; salida de gocyclo; perfiles de go test; salida de cloc"
+      }
+    ],
+    "factor_ajuste": 1.13,
+    "_justificacion_factor": "Factor = 0.75 × 1.5 ≈ 1.13 (criterio del desarrollador). 0.75: entorno más simple (Python en Windows/Ubuntu, sin los ~2 h de problemas de D-Bus, vendor y tags de la referencia). 1.5: QualityOps exige un proceso más pesado que la referencia (Kanban, un PR por tarea, registro de evidencias, matriz de cumplimiento, documentación). Los PF ya cubren la diferencia en funciones.",
+    "_fuente_horas": "Dato del autor (2026-10-08): 4 a 5 h de punta a punta, medidas con las fechas de los archivos (no incluye tiempo fuera de la conversación de desarrollo). Se usa el punto medio, 4.5 h. Desglose: trabajo previo ~2.5–3 h (scripts sueltos ~40 min + reproducir en su equipo ~2 h por D-Bus, -mod=vendor y tags); construcción de la herramienta con IA ~30 min; instalación, ejecución y capturas ~1.5–2 h"
+  }
+}
