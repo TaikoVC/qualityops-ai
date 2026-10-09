@@ -95,6 +95,18 @@ Todo es opcional: sin estos archivos, la métrica correspondiente se reporta com
 | Tiempos y plazos | `data/time_log.csv` (columnas: `tarea, descripcion, modulo, requisitos, optimista_h, mas_probable_h, pesimista_h, sprint_planeado, issue, inicio, fin, real_h, sprint_real, pr, nota`) y `[tool.qualityops.calendario]` en `pyproject.toml` (`S1 = "2026-10-05"`) | Desviación por módulo, plazos, juicio de expertos y PERT |
 | Puntos de función y análoga | `data/estimacion.json` (ver el de este repositorio como ejemplo) | Estimación por PF y análoga |
 
+### Cambiar los umbrales del gate
+
+Cada proyecto decide sus umbrales en su propio `pyproject.toml`; no hay que tocar el código de la herramienta:
+
+```toml
+[tool.qualityops.umbrales]
+cobertura_minima = 75.0      # porcentaje mínimo de líneas cubiertas
+complejidad_maxima = 10      # CC máxima permitida por función (McCabe: 10)
+```
+
+Recomendación: empieza con los valores por defecto. Si tu proyecto ya tiene funciones más complejas (por ejemplo, docker/secrets-engine usa un límite de 16 en gocyclo), sube el límite **solo con una justificación escrita** (en un registro de decisiones) y bájalo poco a poco conforme refactorices. Así el gate no bloquea todo el primer día pero sigue evitando que la complejidad crezca.
+
 Ejemplo de commit de corrección:
 
 ```text
