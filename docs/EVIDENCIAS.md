@@ -11,6 +11,7 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E02 | Tablero Kanban con 25 issues (T01–T25), columnas y WIP = 2; tomado durante T02 | `evidence/E02_kanban_durante_T02_2026-10-05_0050.png` | 2026-10-05 ~00:50 | — | PRO-01, CAL-08 |
 | E02c | Tablero Kanban público, columnas ordenadas, T01–T03 en Done (cierre de S0); #2 cerrado 2026-10-05T06:55:23Z | `evidence/E02c_kanban_final_S0_2026-10-05_0110.png` | 2026-10-05 ~01:10 | 3a8a2d5 | PRO-01, CAL-08 |
 | E02b | Primer PR (#26) integrado con merge commit | `evidence/E02b_primer_pr_merge_2026-10-05_0057.png` | 2026-10-05 00:57 | 2c456f0 → 3a8a2d5 | PRO-02, CAL-08 |
+| E02d | Tablero Kanban final: 18 tareas en Done con su PR enlazado; T16, T20–T26 aún en Backlog al momento de la captura | `evidence/E02d_kanban_final_2026-10-08.png` | 2026-10-08 ~10:00 | 9d93529 | PRO-01, CAL-08 |
 | E03 | Diagramas generados con Graphviz desde código versionado: arquitectura, pipeline CI y ciclo de vida del defecto | `docs/diagramas/arquitectura.png`, `pipeline.png`, `ciclo_defecto.png` (fuentes `.dot`) | 2026-10-08 | T20 | DOC-04, CAL-08 |
 | E04 | pytest (17/17) y ruff limpio — T08 | `evidence/E04_pytest_ruff_T08_2026-10-06_1222.png` | 2026-10-06 12:22 | 1b1c11e + cambios de T08 | PRG-04, PRG-06 |
 | E04b | Ejecución de la CLI `python -m qualityops` y primeras líneas de `reports/metrics.json` (17/17 pruebas, cobertura 81.88 %, CC máx. 9, 0.449 KLOC, 0 defectos) | `evidence/E04b_cli_metrics_json_T08_2026-10-06_1222.png` | 2026-10-06 12:22 | 1b1c11e + cambios de T08 (sin commit aún) | PRG-06, PRG-07 |
@@ -55,5 +56,7 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E17b | Summary del PR #42: Quality gate BLOQUEADO; pruebas 56/56 y cobertura 86.3 % aprueban, complejidad máxima 11 > 10 falla | `evidence/E17b_actions_gate_bloqueado_cc11_PR42_2026-10-08.png` | 2026-10-08 | 5576e4f | CAL-07, PRG-03 |
 | E17c | PR #42: «All checks have failed», check «calidad» *Required* y botón de merge deshabilitado | `evidence/E17c_pr42_merge_deshabilitado_2026-10-08.png` | 2026-10-08 | 5576e4f | CAL-07 |
 | E17d | Informe del PR #42 con dictamen NO LIBERAR y la recomendación de corregir los criterios que fallan | `evidence/E17d_actions_dictamen_no_liberar_PR42_2026-10-08.png` | 2026-10-08 | 5576e4f | CAL-02, CAL-07 |
-| E13 | Reporte final | | | | DOC-01..09 |
+| E16a | **Ejecución final** sobre main (9d93529): 56/56 pruebas, cobertura 88.73 %, CC 3.72/9, 1.066 KLOC, 3 defectos (2.81 def/KLOC), MTTD 0.23 h, MTTR 0.07 h, desviación −61.97 % (18 tareas), plazos 33.33 %; gate APROBADO; informe con LLM | `evidence/E16a_ejecucion_final_cli_gate_report_9d93529_2026-10-08.png` | 2026-10-08 | 9d93529 | PRG-06, PRG-07 |
+| E16b | `gh run list`: historial de ejecuciones del pipeline (fuente de `data/ci_runs.json`, 18 de 19 exitosas; la falla es el PR #42 de demostración) | `evidence/E16b_gh_run_list_2026-10-08.png` | 2026-10-08 | 9d93529 | CAL-06, CAL-05 |
+| E13 | Reporte final en la plantilla UTCJ (PDF y DOCX) | `docs/reporte/Reporte_QualityOps_AI_Ivan_Valle.docx` y `.pdf` | 2026-10-08 | T21 | DOC-01..09, CAL-03, CAL-04, CAL-06, CAL-08 |
 | E14 | Matriz de cumplimiento final | | | | CAL-01 |
