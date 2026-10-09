@@ -58,5 +58,22 @@ Nombre de archivo: `evidence/E##_descripcion_AAAA-MM-DD_HHMM.png`. Una fila por 
 | E17d | Informe del PR #42 con dictamen NO LIBERAR y la recomendación de corregir los criterios que fallan | `evidence/E17d_actions_dictamen_no_liberar_PR42_2026-10-08.png` | 2026-10-08 | 5576e4f | CAL-02, CAL-07 |
 | E16a | **Ejecución final** sobre main (9d93529): 56/56 pruebas, cobertura 88.73 %, CC 3.72/9, 1.066 KLOC, 3 defectos (2.81 def/KLOC), MTTD 0.23 h, MTTR 0.07 h, desviación −61.97 % (18 tareas), plazos 33.33 %; gate APROBADO; informe con LLM | `evidence/E16a_ejecucion_final_cli_gate_report_9d93529_2026-10-08.png` | 2026-10-08 | 9d93529 | PRG-06, PRG-07 |
 | E16b | `gh run list`: historial de ejecuciones del pipeline (fuente de `data/ci_runs.json`, 18 de 19 exitosas; la falla es el PR #42 de demostración) | `evidence/E16b_gh_run_list_2026-10-08.png` | 2026-10-08 | 9d93529 | CAL-06, CAL-05 |
+| E18a | **Defecto 5** reproducido con v1.0.0 sobre python-slugify: «Estimación: juicio 0 h · PERT 0.0 h» sin time_log | `evidence/E18a_otro_repo_estimacion_0h_v1.0.0_2026-10-08.png` | 2026-10-08 | 8daa56c (v1.0.0) | RNF-06, MET-R1 |
+| E18b | Con la corrección: 58 pruebas, ruff limpio; python-slugify 269/274, cobertura 98.12 %, CC máx. 34 → gate BLOQUEADO, informe NO LIBERAR | `evidence/E18b_otro_repo_gate_bloqueado_2026-10-08.png` | 2026-10-08 | rama T26 | RNF-06, PRG-08 |
+| E18c | Dashboard apuntando a los reportes de python-slugify (pestaña Producto) | `evidence/E18c_otro_repo_dashboard_2026-10-08.png` | 2026-10-08 | rama T26 | RNF-06 |
+| E20a | Ejecución final: pytest y ruff | `evidence/E20a_pytest_ruff_2026-10-08.png` | 2026-10-08 | 748d818 | PRG-04 |
+| E20b | Ejecución final: CLI, gate e informe | `evidence/E20b_cli_gate_report_2026-10-08.png` | 2026-10-08 | 748d818 | PRG-06, PRG-07 |
+| E20c | Ejecución final: defectos minados (4) | `evidence/E20c_defectos_2026-10-08.png` | 2026-10-08 | 748d818 | MET-P3, MET-R1..R3, MET-J1 |
+| E20d | Actions (main, 748d818): gate APROBADO y secciones 1–2 del informe con LLM | `evidence/E20d_gate_seccion_1_y_2_2026-10-08.png` | 2026-10-08 | 748d818 | PRG-01, PRG-02, CAL-02, CAL-05 |
+| E20e | Actions: secciones 3–8 del informe | `evidence/E20e_informe_secciones_3_a_8_2026-10-08.png` | 2026-10-08 | 748d818 | CAL-02 |
+| E20f | Actions: secciones 9–11 del informe (defectos, interpretación LLM, coherencia) | `evidence/E20f_informe_secciones_9_a_11_2026-10-08.png` | 2026-10-08 | 748d818 | MET-00, CAL-02 |
+| E20g | Dashboard final: resumen y cumplimiento (40/44 al momento de la captura); sirve como E14 | `evidence/E20g_resumen_y_cumplimiento_2026-10-08.png` | 2026-10-08 | 748d818 | CAL-01, PRO-03 |
+| E20h | Dashboard final: Producto | `evidence/E20h_producto_2026-10-08.png` | 2026-10-08 | 748d818 | MET-P1..P3 |
+| E20i | Dashboard final: Proceso | `evidence/E20i_proceso_2026-10-08.png` | 2026-10-08 | 748d818 | MET-R1..R3 |
+| E20j | Dashboard final: Proyecto | `evidence/E20j_proyecto_2026-10-08.png` | 2026-10-08 | 748d818 | MET-J1..J3 |
+| E20k | Dashboard final: Estimación | `evidence/E20k_estimacion_2026-10-08.png` | 2026-10-08 | 748d818 | EST-1..4 |
+| E20l | Dashboard final: AI Advisor con interpretación del LLM (fuente: llm) | `evidence/E20l_ai_advisor_2026-10-08.png` | 2026-10-08 | 748d818 | MET-00 |
+| E20m | Dashboard final: AI Advisor, riesgos y acciones del LLM + verificaciones | `evidence/E20m_ai_advisor_riesgos_acciones_2026-10-08.png` | 2026-10-08 | 748d818 | MET-00 |
+| E19 | **Plantilla en el CI de otro repositorio**: fork de python-slugify, job «calidad» BLOQUEADO por CC 34, informe NO LIBERAR, IA no configurada | `evidence/E19_fork_slugify_ci_bloqueado_2026-10-08.png`, `evidence/E19b_fork_slugify_actions_2026-10-08.png` | 2026-10-08 | 622d426 (fork) | RNF-06, PRG-08 |
 | E13 | Reporte final en la plantilla UTCJ (PDF y DOCX) | `docs/reporte/Reporte_QualityOps_AI_Ivan_Valle.docx` y `.pdf` | 2026-10-08 | T21 | DOC-01..09, CAL-03, CAL-04, CAL-06, CAL-08 |
 | E14 | Matriz de cumplimiento final | | | | CAL-01 |

@@ -24,4 +24,4 @@ T22,Ejecución desde cero y etiqueta v1.0.0,ci,PRG-06,0.25,0.5,1.0,S3A,,,,,,,
 T23,QA final de la matriz,docs,Todos,0.5,1.0,2.0,S3C,,,,,,,
 T24,Guion de demo,docs,PRG-09,0.25,0.25,0.5,S3C,,,,,,,
 T25,(Opcional) Encuesta de satisfacción,gestion,MET-J3,0.25,0.5,1.0,S3C,,,,,,,
-T26,(Opcional) Demostración en un segundo repositorio Python,ci,PRG-08,0.25,0.5,1.0,S3A,,,,,,,"Agregada el 2026-10-05 después de la línea base (cambio de alcance, D13); no forma parte de la estimación inicial"
+T26,(Opcional) Demostración en un segundo repositorio Python,ci,PRG-08,0.25,0.5,1.0,S3A,#27,2026-10-08 19:19,2026-10-08 20:08,0.82,2026-10-08,#45 (merge 748d818),"Agregada el 2026-10-05 después de la línea base (cambio de alcance, D13); no forma parte de la estimación inicial. Inicio = hora de la captura E18a y fin = merge del PR #45 (marcas de tiempo de archivos y de Git). Incluye el hallazgo y la corrección del defecto 5"

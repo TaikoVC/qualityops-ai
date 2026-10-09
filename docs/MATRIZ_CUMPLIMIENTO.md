@@ -2,7 +2,7 @@
 
 > Regla: una fila solo pasa a **Cumple** cuando existe evidencia real (archivo, captura, log o commit) y se anota su referencia.
 > Estados: ⬜ Pendiente · 🟨 En progreso · 🟧 Parcial · ✅ Cumple · ❌ No cumple
-> Última actualización: 2026-10-08 — reporte final (T21), ejecución final sobre 9d93529 (E16a, E16b).
+> Última actualización: 2026-10-08 — v1.0.1 (defecto 5), uso en otro repositorio (E18), capturas finales (E20).
 
 | ID | Requisito | Implementación | Evidencia (ID / archivo / commit) | Criterio de aceptación | Estado |
 |---|---|---|---|---|---|
@@ -28,7 +28,7 @@
 | CAL-02 | Informe de calidad en formato | `qualityops/report.py` → `reports/quality_report.md` (12 secciones, ISO/IEC/IEEE 29119-3) + dictamen; publicado en el resumen de Actions | E10, E15b | Generado en local y en CI con todas las secciones | ✅ |
 | CAL-03 | Requisitos explícitos | 15 RF + 10 RNF con prioridad, criterio y evidencia | Reporte final (E13): cap. 6 | ID, descripción, prioridad, criterio | ✅ |
 | CAL-04 | Requisitos de usuario y negocio | 5 historias de usuario + 9 expectativas con indicador | Reporte final (E13): cap. 7 | ≥ 1 historia, ≥ 3 expectativas medibles | ✅ |
-| CAL-05 | Aseguramiento de calidad | Pruebas + ruff + revisión por PR + CI + quality gate (plan SQA, cap. 8) | E05, E08, E16b (main en verde) | Pipeline verde en v1.0 | 🟨 (se confirma con el tag v1.0.0) |
+| CAL-05 | Aseguramiento de calidad | Pruebas + ruff + revisión por PR + CI + quality gate (plan SQA, cap. 8) | E20a, E20d (job «calidad» verde en 748d818 = tag v1.0.1) | Pipeline verde en v1.0 | ✅ |
 | CAL-06 | Idoneidad funcional y fiabilidad | Tabla ISO/IEC 25010:2023 con medidas al estilo ISO/IEC 25023 | Reporte final (E13): cap. 9, E16b | Subcaracterísticas con valor real | ✅ |
 | CAL-07 | Enfoque preventivo | Quality gate en el CI + ruleset que exige el check `calidad` para integrar a main | E08a, E08b, E08g, E17a–E17d (PR #42 bloqueado por CC 11, cerrado sin merge) | ≥ 1 bloqueo real en CI | ✅ |
 | CAL-08 | Carácter sistemático | Kanban + ciclo repetible + trazabilidad + decisiones | E02, E02b, Reporte final (E13): cap. 11 | Requisito → issue → commit → evidencia | ✅ |
@@ -48,7 +48,7 @@
 | EST-4 | Puntos de función | `estimation.py`: 97 PF sin ajustar (IFPUG/ISO 20926) × 0.0437 h/PF | E12 | 4.24 h; conteo documentado en `data/estimacion.json` | ✅ |
 | PRO-01 | Kanban | GitHub Projects (Backlog, Ready, In Progress con WIP 2, Review/Validate, Done) | E02, E02c (cierre S0), E02d (tablero final: 18 en Done) | Capturas por sprint | ✅ |
 | PRO-02 | Commits por cambio | Git + PR con merge commit + Conventional Commits | E00c, E02b, E15c; tabla de PRs (cap. 8.2) | Mensajes con ID de tarea | ✅ |
-| PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | E00–E17d | E01–E14 con archivo y fecha | 🟨 (falta E14: captura de la matriz final) |
+| PRO-03 | Evidencia por sprint | `docs/EVIDENCIAS.md` | E00–E20l; E14 = E20g (matriz calculada por el dashboard) | E01–E14 con archivo y fecha | ✅ |
 | PRO-04 | Bitácora de IA | `docs/AI_LOG.md` (incluye errores de la IA y su corrección) | `docs/AI_LOG.md` | Entradas por sprint | ✅ |
 
-**Grado de cumplimiento actual:** 40 / 44 (90.9 %) Cumple · 4 en progreso. Nada se marca Cumple hasta tener evidencia.
+**Grado de cumplimiento actual:** 42 / 44 (95.5 %) Cumple · 2 en progreso. Nada se marca Cumple hasta tener evidencia.
