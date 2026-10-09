@@ -205,7 +205,10 @@ def cumplimiento_matriz(ruta: Path) -> None:
 
 def ejecuciones_ci(ruta: Path) -> None:
     """Resultado de las ejecuciones del pipeline (gh run list), por tipo de evento."""
-    runs = [r for r in json.loads(ruta.read_text(encoding="utf-8")) if r.get("status") == "completed"]
+    crudo = ruta.read_bytes()
+    # PowerShell 5 escribe con ">" en UTF-16; se aceptan ambas codificaciones.
+    texto = crudo.decode("utf-16") if crudo[:2] in (b"\xff\xfe", b"\xfe\xff") else crudo.decode("utf-8-sig")
+    runs = [r for r in json.loads(texto) if r.get("status") == "completed"]
     eventos = sorted({r["event"] for r in runs})
     resultados = ["success", "failure", "cancelled"]
     colores = {"success": VERDE, "failure": ROJO, "cancelled": GRIS}

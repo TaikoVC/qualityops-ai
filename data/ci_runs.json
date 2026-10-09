@@ -1,0 +1,173 @@
+[
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T14:37:29Z",
+  "databaseId": 37793992799,
+  "event": "push",
+  "headBranch": "main",
+  "status": "completed",
+  "updatedAt": "2026-10-08T14:38:16Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T14:35:55Z",
+  "databaseId": 37793778212,
+  "event": "pull_request",
+  "headBranch": "T20-diagramas",
+  "status": "completed",
+  "updatedAt": "2026-10-08T14:36:54Z"
+ },
+ {
+  "conclusion": "failure",
+  "createdAt": "2026-10-08T14:08:22Z",
+  "databaseId": 37790010542,
+  "event": "pull_request",
+  "headBranch": "demo-bloqueo-gate",
+  "status": "completed",
+  "updatedAt": "2026-10-08T14:09:17Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T14:04:21Z",
+  "databaseId": 37789462081,
+  "event": "push",
+  "headBranch": "main",
+  "status": "completed",
+  "updatedAt": "2026-10-08T14:06:03Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T13:24:54Z",
+  "databaseId": 37784149934,
+  "event": "pull_request",
+  "headBranch": "T19b-registro",
+  "status": "completed",
+  "updatedAt": "2026-10-08T13:25:37Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T09:57:32Z",
+  "databaseId": 37760236662,
+  "event": "push",
+  "headBranch": "main",
+  "status": "completed",
+  "updatedAt": "2026-10-08T09:58:28Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T09:52:21Z",
+  "databaseId": 37759637358,
+  "event": "pull_request",
+  "headBranch": "T17b-gemini",
+  "status": "completed",
+  "updatedAt": "2026-10-08T09:53:06Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T08:38:42Z",
+  "databaseId": 37751203114,
+  "event": "push",
+  "headBranch": "main",
+  "status": "completed",
+  "updatedAt": "2026-10-08T08:39:25Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T08:36:54Z",
+  "databaseId": 37751004423,
+  "event": "pull_request",
+  "headBranch": "T18-T19-dashboard",
+  "status": "completed",
+  "updatedAt": "2026-10-08T08:37:40Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T08:22:10Z",
+  "databaseId": 37749372371,
+  "event": "pull_request",
+  "headBranch": "T18-T19-dashboard",
+  "status": "completed",
+  "updatedAt": "2026-10-08T08:22:56Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T07:39:24Z",
+  "databaseId": 37744777267,
+  "event": "push",
+  "headBranch": "main",
+  "status": "completed",
+  "updatedAt": "2026-10-08T07:40:03Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T07:31:56Z",
+  "databaseId": 37744008630,
+  "event": "pull_request",
+  "headBranch": "T12-T17-informe-ia",
+  "status": "completed",
+  "updatedAt": "2026-10-08T07:32:40Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T07:18:46Z",
+  "databaseId": 37742652552,
+  "event": "pull_request",
+  "headBranch": "T12-T17-informe-ia",
+  "status": "completed",
+  "updatedAt": "2026-10-08T07:19:31Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T07:18:02Z",
+  "databaseId": 37742577889,
+  "event": "push",
+  "headBranch": "main",
+  "status": "completed",
+  "updatedAt": "2026-10-08T07:18:41Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T07:16:52Z",
+  "databaseId": 37742460445,
+  "event": "pull_request",
+  "headBranch": "T15-estimacion",
+  "status": "completed",
+  "updatedAt": "2026-10-08T07:17:34Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T06:38:26Z",
+  "databaseId": 37738719268,
+  "event": "push",
+  "headBranch": "main",
+  "status": "completed",
+  "updatedAt": "2026-10-08T06:39:08Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T06:36:36Z",
+  "databaseId": 37738551130,
+  "event": "pull_request",
+  "headBranch": "T13-T14-proceso-proyecto",
+  "status": "completed",
+  "updatedAt": "2026-10-08T06:37:10Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T06:17:18Z",
+  "databaseId": 37736780350,
+  "event": "push",
+  "headBranch": "main",
+  "status": "completed",
+  "updatedAt": "2026-10-08T06:17:58Z"
+ },
+ {
+  "conclusion": "success",
+  "createdAt": "2026-10-08T06:08:58Z",
+  "databaseId": 37736038014,
+  "event": "pull_request",
+  "headBranch": "T11-ci",
+  "status": "completed",
+  "updatedAt": "2026-10-08T06:09:35Z"
+ }
+]
