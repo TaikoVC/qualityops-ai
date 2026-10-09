@@ -43,12 +43,16 @@ def tareas_linea_base(tareas: list[dict]) -> list[dict]:
 
 
 def juicio_expertos(tareas: list[dict]) -> dict:
-    """EST-1: suma de la estimación más probable del autor."""
+    """EST-1: suma de la estimación más probable del autor (None si no hay tareas: no se inventa un 0)."""
+    if not tareas:
+        return {"horas": None, "tareas": 0}
     return {"horas": round(sum(float(t["mas_probable_h"]) for t in tareas), 2), "tareas": len(tareas)}
 
 
 def tres_puntos(tareas: list[dict]) -> dict:
-    """EST-3: PERT por tarea y total, con su desviación estándar."""
+    """EST-3: PERT por tarea y total, con su desviación estándar (None si no hay tareas)."""
+    if not tareas:
+        return {"horas": None, "sigma_h": None, "rango_95_h": None}
     esperado, varianza = 0.0, 0.0
     for t in tareas:
         o, m, p = float(t["optimista_h"]), float(t["mas_probable_h"]), float(t["pesimista_h"])
