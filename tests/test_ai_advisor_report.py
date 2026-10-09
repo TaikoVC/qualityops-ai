@@ -186,3 +186,13 @@ def test_gemini_tiempo_agotado_no_reintenta_y_lo_explica(monkeypatch):
     r = analizar(metricas(), GATE_OK, cliente=ai_advisor.cliente_gemini("x"))
     assert llamadas == [ai_advisor.TIMEOUT_GEMINI_S]            # un solo intento
     assert r["fuente"] == "reglas" and "no respondió" in r["error_llm"]
+
+
+def test_informe_sin_estimacion_muestra_guion_y_no_none():
+    m = metricas()
+    m["estimacion"] = {"juicio_expertos": {"horas": None}, "analoga": {"horas": None},
+                       "tres_puntos": {"horas": None, "sigma_h": None},
+                       "puntos_de_funcion": {"horas": None, "pf_sin_ajustar": 0}}
+    texto = generar_informe(m, GATE_OK, analizar(m, GATE_OK, cliente=None))
+    seccion = texto.split("## 8. Estimación")[1].split("## 9.")[0]
+    assert "None" not in seccion and "—" in seccion

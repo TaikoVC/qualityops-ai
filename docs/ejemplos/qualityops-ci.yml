@@ -1,0 +1,86 @@
+# Plantilla para usar QualityOps AI en OTRO repositorio Python.
+#
+# Cómo usarla:
+#   1. Copia este archivo a tu repositorio como .github/workflows/qualityops.yml
+#   2. Haz commit y abre un Pull Request: el job «calidad» se ejecuta solo.
+#   3. (Recomendado) En Settings → Rules → Rulesets, exige el check «calidad» para integrar a main.
+#   4. (Opcional) Interpretación con IA: guarda TU propia llave gratuita de Google AI Studio
+#      como secreto del repositorio:  gh secret set GEMINI_API_KEY
+#      Sin llave, el informe se genera igual con la ruta por reglas.
+#
+# Estructura dentro del runner (dos checkouts lado a lado, para que el código de la
+# herramienta NO se mezcle con el de tu proyecto en las métricas):
+#   $GITHUB_WORKSPACE/proyecto/       <- tu repositorio (con todo su historial)
+#   $GITHUB_WORKSPACE/qualityops-ai/  <- la herramienta, en una versión fija (tag)
+#   $GITHUB_WORKSPACE/reports/        <- resultados (se publican como artefacto)
+name: QualityOps
+
+on:
+  push:
+    branches: [main, master]   # la rama principal de tu repositorio (ajústala si tiene otro nombre)
+  pull_request:                # todos los Pull Requests
+
+permissions:
+  contents: read
+
+jobs:
+  calidad:
+    name: calidad
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el proyecto con todo su historial (la minería de defectos lo necesita)
+        uses: actions/checkout@v5
+        with:
+          path: proyecto
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Descargar QualityOps AI en una versión fija
+        uses: actions/checkout@v5
+        with:
+          repository: TaikoVC/qualityops-ai
+          ref: v1.0.1
+          path: qualityops-ai
+
+      - name: Instalar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+
+      - name: Instalar QualityOps AI y las dependencias del proyecto
+        run: |
+          python -m pip install -r qualityops-ai/requirements.txt
+          # Las pruebas de TU proyecto se ejecutan en este mismo Python: instala lo que necesiten.
+          # Primero requirements.txt; si no existe y el proyecto es un paquete instalable, se instala tal cual.
+          if [ -f proyecto/requirements.txt ]; then
+            python -m pip install -r proyecto/requirements.txt
+          elif [ -f proyecto/pyproject.toml ] || [ -f proyecto/setup.py ]; then
+            python -m pip install -e proyecto
+          fi
+
+      - name: Métricas (pruebas, cobertura, complejidad, defectos)
+        working-directory: qualityops-ai
+        run: python -m qualityops --repo ../proyecto --salida ../reports
+
+      - name: Quality gate (usa [tool.qualityops.umbrales] de tu pyproject.toml; si no existe, 75 % y CC 10)
+        working-directory: qualityops-ai
+        run: >
+          python -m qualityops.quality_gate --metricas ../reports/metrics.json
+          --config ../proyecto/pyproject.toml --resumen "$GITHUB_STEP_SUMMARY"
+
+      - name: Informe de calidad (se genera aunque el gate bloquee)
+        if: always() && hashFiles('reports/metrics.json') != ''
+        working-directory: qualityops-ai
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python -m qualityops.report --metricas ../reports/metrics.json
+          cat ../reports/quality_report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publicar los reportes como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes-calidad
+          path: reports/
+          if-no-files-found: warn

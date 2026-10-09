@@ -46,4 +46,5 @@ def test_genera_metrics_json(tmp_path):
     assert m["defectos"]["n_defectos"] == 0
     assert m["proceso"]["mttd"]["n"] == 0
     assert m["proyecto"]["desviacion"]["tareas_terminadas"] == 0
-    assert m["estimacion"]["juicio_expertos"]["horas"] == 0
+    # Sin data/time_log.csv no hay estimación: se reporta None, no 0 h (defecto 5).
+    assert m["estimacion"]["juicio_expertos"]["horas"] is None

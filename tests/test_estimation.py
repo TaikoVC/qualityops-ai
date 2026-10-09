@@ -62,3 +62,10 @@ def test_tasa_derivada_de_la_referencia():
     r = estimar(TAREAS, datos)["puntos_de_funcion"]
     assert (r["horas_por_pf"], r["horas"]) == (0.25, 5.0)     # 10 h / 40 PF
     assert r["fuente_tasa"] == "derivada del proyecto de referencia"
+
+
+def test_repositorio_sin_time_log_no_inventa_horas():
+    # Defecto 5: en un repositorio sin data/time_log.csv el juicio y PERT salían como "0 h".
+    r = estimar([], {})
+    assert r["juicio_expertos"]["horas"] is None
+    assert r["tres_puntos"]["horas"] is None and r["tres_puntos"]["sigma_h"] is None

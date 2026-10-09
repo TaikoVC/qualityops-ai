@@ -29,6 +29,8 @@ python -m pip install -r requirements.txt
 
 ## Uso
 
+> **¿Quieres aplicarlo a tu propio repositorio?** Sigue [`docs/GUIA_DE_USO.md`](docs/GUIA_DE_USO.md): requisitos, uso local, integración al CI con la plantilla [`docs/ejemplos/qualityops-ci.yml`](docs/ejemplos/qualityops-ci.yml), llave de IA y solución de problemas.
+
 ```powershell
 # Métricas, quality gate e informe (sobre este repositorio o cualquier otro con --repo)
 python -m qualityops --repo . --salida reports

@@ -86,8 +86,11 @@ def _secciones_metricas(m: dict) -> list[str]:
     out += _tabla(["Técnica", "Horas"], [
         ["Juicio de expertos", est["juicio_expertos"]["horas"]],
         ["Análoga", est["analoga"]["horas"]],
-        ["Tres puntos (PERT)", f"{est['tres_puntos']['horas']} ± {est['tres_puntos']['sigma_h']}"],
-        ["Puntos de función", f"{est['puntos_de_funcion']['horas']} ({est['puntos_de_funcion']['pf_sin_ajustar']} PF)"],
+        # Sin datos de estimación (p. ej. otro repositorio sin time_log.csv) se muestra «—», no «None».
+        ["Tres puntos (PERT)", None if est["tres_puntos"]["horas"] is None
+         else f"{est['tres_puntos']['horas']} ± {est['tres_puntos']['sigma_h']}"],
+        ["Puntos de función", None if est["puntos_de_funcion"]["horas"] is None
+         else f"{est['puntos_de_funcion']['horas']} ({est['puntos_de_funcion']['pf_sin_ajustar']} PF)"],
         ["Real (tareas terminadas)", proy["desviacion"]["real_h"]],
     ])
     return out
