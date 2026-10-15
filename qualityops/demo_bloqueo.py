@@ -1,4 +1,4 @@
-﻿"""Cambio de demostracion: funcion demasiado compleja (CC 11) para que el gate la bloquee."""
+"""Cambio de demostracion: funcion demasiado compleja (CC 11) para que el gate la bloquee."""
 
 
 def clasificar_pedido(monto, cliente, urgente, internacional, cupon, dia):
