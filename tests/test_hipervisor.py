@@ -121,3 +121,21 @@ def test_cp_seg_05_cliente_rechaza_conexiones_inseguras():
         ClienteProxmox("http://192.168.56.10:8006", "id", "secreto", "ca.pem")
     with pytest.raises(ConfiguracionInsegura):
         ClienteProxmox("https://192.168.56.10:8006", "id", "secreto", None)
+
+
+@pytest.mark.componente
+def test_reintenta_el_arranque_si_proxmox_no_lo_inicia():
+    """Defecto 8: si el primer 'start' no deja el contenedor en running, se reintenta una vez."""
+    estado, peticiones = {"status": "running"}, []
+    pve = cliente(estado, peticiones)
+    original = pve.iniciar_contenedor
+    llamadas = []
+
+    def inicio_que_falla_la_primera_vez(nodo, vmid):
+        llamadas.append(vmid)
+        if len(llamadas) > 1:
+            return original(nodo, vmid)
+        return "UPID:pve:start-fallido"
+    pve.iniciar_contenedor = inicio_que_falla_la_primera_vez
+    r = prueba_ciclo_de_vida(pve, "pve", 200, 8000, espera_max_s=2, cliente_http=servicio_simulado(estado))
+    assert r["ok"] is True and len(llamadas) == 2

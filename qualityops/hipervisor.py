@@ -36,6 +36,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import ssl
 import sys
 import time
 from datetime import datetime
@@ -63,7 +64,7 @@ class ClienteProxmox:
         self.base = url.rstrip("/") + "/api2/json"
         self._http = httpx.Client(
             headers={"Authorization": f"PVEAPIToken={token_id}={token_secreto}"},
-            verify=ca if ca else True, timeout=timeout, transport=transporte)
+            verify=ssl.create_default_context(cafile=ca) if ca else True, timeout=timeout, transport=transporte)
 
     @classmethod
     def desde_entorno(cls) -> ClienteProxmox:
@@ -190,7 +191,7 @@ def verificar_hiperconvergencia(pve: ClienteProxmox, nodo: str = "pve", vmid: in
 
 
 def prueba_ciclo_de_vida(pve: ClienteProxmox, nodo: str, vmid: int, puerto: int,
-                         espera_max_s: float = 60.0, cliente_http: httpx.Client | None = None) -> dict:
+                         espera_max_s: float = 90.0, cliente_http: httpx.Client | None = None) -> dict:
     """Detiene el contenedor por API, comprueba que el servicio cae, lo arranca y comprueba que vuelve."""
     ip = ip_de_config(pve.config_contenedor(nodo, vmid))
     http = cliente_http or httpx.Client(timeout=3.0)
@@ -206,10 +207,24 @@ def prueba_ciclo_de_vida(pve: ClienteProxmox, nodo: str, vmid: int, puerto: int,
     pasos.append(_check("Detener por API -> contenedor 'stopped' y servicio sin respuesta",
                         caido and servicio_caido, f"stopped={caido}, servicio_caido={servicio_caido}"))
 
-    pve.iniciar_contenedor(nodo, vmid)
-    volvio = _esperar(lambda: _responde(http, ip, puerto), espera_max_s)
-    pasos.append(_check("Iniciar por API -> el servicio vuelve a responder", volvio, f"responde={volvio}"))
+    inicio = time.monotonic()
+    corriendo = _arrancar(pve, nodo, vmid, espera_max_s)
+    volvio = corriendo and _esperar(lambda: _responde(http, ip, puerto), espera_max_s)
+    pasos.append(_check("Iniciar por API -> el servicio vuelve a responder", volvio,
+                        f"running={corriendo}, responde={volvio}, "
+                        f"recuperado en {round(time.monotonic() - inicio, 1)} s"))
     return {"ok": all(p["ok"] for p in pasos), "verificaciones": pasos}
+
+
+def _arrancar(pve: ClienteProxmox, nodo: str, vmid: int, espera_max_s: float) -> bool:
+    """Pide el arranque y espera 'running'. Defecto 8: si la orden llega mientras Proxmox aún
+    libera el bloqueo del 'stop', la tarea de arranque falla en segundo plano y el contenedor
+    se queda detenido; por eso se reintenta una vez."""
+    for _ in range(2):
+        pve.iniciar_contenedor(nodo, vmid)
+        if _esperar(lambda: pve.estado_contenedor(nodo, vmid).get("status") == "running", espera_max_s / 2):
+            return True
+    return False
 
 
 def _responde(http: httpx.Client, ip: str, puerto: int) -> bool:
