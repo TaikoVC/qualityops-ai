@@ -22,11 +22,17 @@ from qualityops.centro_pruebas import RAIZ, TIPOS, cargar_catalogo, documentar
 ICONOS = {"pasa": "✅", "falla": "❌", "omitida": "⏭️", "sin ejecutar": "⬜", "pendiente": "🕒"}
 
 
+# Defecto 7: en Windows, un proceso hijo cuya salida va a un tubo (pipe) escribe con la
+# codificación del sistema (cp1252), no UTF-8. Al leer "↔" o acentos como UTF-8 fallaba la
+# lectura y stdout quedaba en None. Se fuerza UTF-8 en el hijo y se reemplaza lo ilegible.
+ENTORNO_UTF8 = {"PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"}
+
+
 def _correr(modulo: str, *args: str, entorno: dict | None = None) -> subprocess.CompletedProcess:
     """Ejecuta `python -m qualityops.<modulo> ...` desde la raíz del proyecto."""
     return subprocess.run([sys.executable, "-m", f"qualityops.{modulo}", *args], cwd=RAIZ,  # nosec B603
-                          capture_output=True, text=True, encoding="utf-8", check=False,
-                          env={**os.environ, **(entorno or {})})
+                          capture_output=True, text=True, encoding="utf-8", errors="replace", check=False,
+                          env={**os.environ, **(entorno or {}), **ENTORNO_UTF8})
 
 
 def _leer(ruta: Path) -> dict | None:
@@ -35,7 +41,7 @@ def _leer(ruta: Path) -> dict | None:
 
 def _salida(proceso: subprocess.CompletedProcess) -> None:
     with st.expander("Salida del comando"):
-        st.code((proceso.stdout + proceso.stderr)[-4000:] or "(sin salida)")
+        st.code(((proceso.stdout or "") + (proceso.stderr or ""))[-4000:] or "(sin salida)")
 
 
 # --------------------------------------------------------------------------

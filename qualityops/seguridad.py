@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
 
@@ -48,7 +49,8 @@ def _ejecutar(comando: list[str], cwd: Path) -> str:
     """Corre un escáner instalado en el mismo entorno de Python y devuelve su salida (JSON)."""
     # Bandit B603: argumentos fijos
     proceso = subprocess.run(comando, cwd=cwd, capture_output=True, text=True,  # nosec B603
-                             encoding="utf-8", check=False)
+                             encoding="utf-8", errors="replace", check=False,
+                             env={**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"})
     return proceso.stdout
 
 

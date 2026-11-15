@@ -61,3 +61,12 @@ def test_boton_hipervisor_sin_secreto_avisa(reportes_de_ejemplo):
     app.button(key="btn_hipervisor").click().run()
     assert not app.exception
     assert any("secreto" in e.value for e in app.error)
+
+
+def test_salida_de_comandos_con_acentos_en_windows(monkeypatch):
+    """Defecto 7: con la codificación de Windows (cp1252) la salida del comando quedaba en None
+    y el botón «Verificar comunicación» mostraba un TypeError. Ahora se lee siempre como texto."""
+    from qualityops.vistas import _correr
+    monkeypatch.setenv("PYTHONIOENCODING", "cp1252")
+    proceso = _correr("hipervisor", "--help")
+    assert proceso.returncode == 0 and "también" in proceso.stdout

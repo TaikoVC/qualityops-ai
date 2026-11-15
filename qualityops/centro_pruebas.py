@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 
 # Bandit B404: se ejecuta pytest con argumentos fijos, sin shell
 import subprocess  # nosec B404
@@ -58,7 +59,8 @@ def ejecutar_tipo(tipo: str, salida: Path, raiz: Path = RAIZ) -> dict:
         comando += ["-m", tipo]
     # Bandit B603: argumentos fijos
     proceso = subprocess.run(comando, cwd=raiz, capture_output=True, text=True,  # nosec B603
-                             encoding="utf-8", check=False)
+                             encoding="utf-8", errors="replace", check=False,
+                             env={**os.environ, "PYTHONIOENCODING": "utf-8", "PYTHONUTF8": "1"})
     resultados = leer_junit(junit)
     return {"tipo": tipo, "codigo_salida": proceso.returncode, "pruebas": resultados,
             "resumen": resumir(resultados), "salida": proceso.stdout[-3000:]}
