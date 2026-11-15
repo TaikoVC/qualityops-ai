@@ -92,3 +92,11 @@ def test_conteo_de_lineas(tmp_path):
     assert resultado["comentarios"] == 1
     assert resultado["blancos"] == 4
     assert resultado["kloc"] == 0.014
+
+
+def test_archivo_con_bom_no_detiene_el_analisis(tmp_path):
+    """Defecto 6: un .py guardado con BOM (UTF-8 con firma) detenía el análisis completo."""
+    (tmp_path / "con_bom.py").write_bytes("\ufeffdef f(x):\n    return x\n".encode("utf-8"))
+    resultado = analizar_complejidad(tmp_path)
+    assert resultado["maximo"] == 1 and resultado["n_funciones"] == 1
+    assert contar_lineas(tmp_path)["sloc"] == 2
