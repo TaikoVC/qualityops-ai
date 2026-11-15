@@ -63,8 +63,13 @@ def encontrar_archivos_python(repo: Path) -> list[Path]:
 
 
 def _leer(ruta: Path) -> str:
-    """Lee un archivo como UTF-8 (formato estándar del código Python)."""
-    return ruta.read_text(encoding="utf-8")
+    """Lee un archivo como UTF-8 (formato estándar del código Python).
+
+    "utf-8-sig" quita la marca BOM que agregan algunos editores de Windows (por ejemplo
+    `Set-Content -Encoding utf8` de PowerShell 5). Python acepta esos archivos, pero radon
+    fallaba con "invalid non-printable character U+FEFF" y detenía todo el análisis (defecto 6).
+    """
+    return ruta.read_text(encoding="utf-8-sig")
 
 
 def analizar_complejidad(repo: Path) -> dict:

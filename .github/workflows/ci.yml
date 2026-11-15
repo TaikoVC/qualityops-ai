@@ -43,6 +43,13 @@ jobs:
       - name: Quality gate (bloquea si no se cumplen los umbrales)
         run: python -m qualityops.quality_gate --metricas reports/metrics.json --resumen "$GITHUB_STEP_SUMMARY"
 
+      - name: Pruebas de seguridad (Bandit, pip-audit, detect-secrets) con análisis de IA
+        # DevSecOps (T32): un hallazgo medio/alto, una dependencia vulnerable o un secreto BLOQUEAN.
+        if: always()
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python -m qualityops.seguridad --repo . --resumen "$GITHUB_STEP_SUMMARY"
+
       - name: Informe de calidad (ISO/IEC/IEEE 29119-3) e interpretación del AI Advisor
         # Se genera aunque el gate haya bloqueado: el informe explica por qué.
         if: always() && hashFiles('reports/metrics.json') != ''

@@ -193,7 +193,12 @@ def cliente_gemini(llave: str) -> Callable[[str], str]:
         cuerpo = json.dumps({"model": MODELO_GEMINI, "input": prompt}).encode("utf-8")
         peticion = urllib.request.Request(URL_GEMINI, data=cuerpo, method="POST", headers={
             "x-goog-api-key": llave, "Content-Type": "application/json"})
-        with urllib.request.urlopen(peticion, timeout=TIMEOUT_GEMINI_S) as respuesta:
+        # Seguridad (Bandit B310): urlopen también abre file:// y otros esquemas. La llave solo
+        # se envía si la URL es https:// (URL_GEMINI es fija, pero se valida igual).
+        if not peticion.full_url.startswith("https://"):
+            raise ValueError(f"URL de Gemini no permitida (solo https://): {peticion.full_url}")
+        # Bandit B310: validada arriba
+        with urllib.request.urlopen(peticion, timeout=TIMEOUT_GEMINI_S) as respuesta:  # nosec B310
             return texto_de_respuesta_gemini(json.loads(respuesta.read().decode("utf-8")))
 
     def llamar(prompt: str) -> str:

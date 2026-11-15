@@ -30,8 +30,11 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import shutil
 import statistics
-import subprocess
+
+# Bandit B404: solo git de lectura, con lista de argumentos y sin shell
+import subprocess  # nosec B404
 from datetime import datetime
 from pathlib import PurePosixPath
 
@@ -55,7 +58,12 @@ def _git(repo, *args) -> str:
     GIT_OPTIONAL_LOCKS=0 evita que git cree archivos de bloqueo (.git/index.lock).
     """
     entorno = dict(os.environ, GIT_OPTIONAL_LOCKS="0")
-    proceso = subprocess.run(["git", "-C", str(repo), "-c", "core.quotepath=off", *args],
+    # Seguridad (Bandit B607): ruta ABSOLUTA de git en lugar de buscarla en el PATH.
+    git = shutil.which("git")
+    if git is None:
+        return ""
+    # Bandit B603: lista fija
+    proceso = subprocess.run([git, "-C", str(repo), "-c", "core.quotepath=off", *args],  # nosec B603
                              capture_output=True, text=True, encoding="utf-8",
                              env=entorno, check=False)
     return proceso.stdout if proceso.returncode == 0 else ""

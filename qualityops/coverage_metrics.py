@@ -23,11 +23,17 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import subprocess
+
+# Bandit B404: solo se ejecuta pytest con sys.executable y argumentos fijos
+import subprocess  # nosec B404
 import sys
 import tempfile
-import xml.etree.ElementTree as ET
 from pathlib import Path
+
+# Seguridad (Bandit B314/B405): el reporte JUnit es XML generado al ejecutar las pruebas del
+# proyecto ANALIZADO, que puede ser de un tercero. defusedxml bloquea entidades externas (XXE)
+# y expansiones masivas ("billion laughs"); xml.etree no lo hace.
+from defusedxml import ElementTree as ET
 
 from qualityops.product_metrics import encontrar_archivos_python
 
@@ -50,7 +56,8 @@ def _ejecutar_pytest(repo: Path, carpeta_temporal: Path) -> int:
     ]
     entorno = dict(os.environ, COVERAGE_FILE=str(carpeta_temporal / ".coverage"))
     # check=False: una prueba fallida NO es un error de la herramienta; se reporta.
-    proceso = subprocess.run(comando, cwd=repo, env=entorno, capture_output=True,
+    # Bandit B603: lista fija
+    proceso = subprocess.run(comando, cwd=repo, env=entorno, capture_output=True,  # nosec B603
                              text=True, timeout=TIEMPO_MAXIMO, check=False)
     return proceso.returncode
 

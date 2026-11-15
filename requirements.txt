@@ -4,4 +4,16 @@ pytest==9.1.1
 pytest-cov==7.1.0
 radon==6.0.1
 ruff==0.16.10
-streamlit==1.65.0
+streamlit==1.67.0
+# pillow la instala streamlit; se fija 13.0.0 porque 12.3.0 tiene 42 vulnerabilidades conocidas
+# (pip-audit, T32). streamlit 1.65 exigía pillow<13; 1.67 acepta pillow<14.
+pillow==13.0.0
+# T30-T32 (pruebas de API, hipervisor y seguridad), fijadas el 2026-11-14:
+fastapi==0.163.0
+uvicorn==0.54.0
+httpx==0.28.1
+hypothesis==6.170.15
+bandit==1.9.4
+pip-audit==2.10.1
+detect-secrets==1.5.0
+defusedxml==0.7.1
