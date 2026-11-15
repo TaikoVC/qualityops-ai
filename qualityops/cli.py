@@ -12,7 +12,10 @@ from __future__ import annotations
 
 import argparse
 import json
-import subprocess
+import shutil
+
+# Bandit B404: solo git de lectura, con lista de argumentos y sin shell
+import subprocess  # nosec B404
 from datetime import datetime
 from pathlib import Path
 
@@ -28,7 +31,12 @@ from qualityops.project_metrics import calcular_proyecto, leer_time_log
 
 def _commit_actual(repo: Path) -> str | None:
     """Hash corto del commit analizado (None si la carpeta no es un repositorio)."""
-    proceso = subprocess.run(["git", "-C", str(repo), "rev-parse", "--short", "HEAD"],
+    # Seguridad (Bandit B607): ruta ABSOLUTA de git, no la primera "git" que aparezca en el PATH.
+    git = shutil.which("git")
+    if git is None:
+        return None
+    # Bandit B603: lista fija
+    proceso = subprocess.run([git, "-C", str(repo), "rev-parse", "--short", "HEAD"],  # nosec B603
                              capture_output=True, text=True, check=False)
     return proceso.stdout.strip() or None
 
