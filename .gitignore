@@ -25,3 +25,7 @@ reports/*
 Thumbs.db
 .vscode/
 .idea/
+
+# Resultados de las ejecuciones manuales de la demo
+ci_*/
+reports_*/

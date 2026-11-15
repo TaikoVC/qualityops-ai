@@ -4,6 +4,23 @@
 [tool.pytest.ini_options]
 # Dónde están las pruebas automatizadas.
 testpaths = ["tests"]
+# Tipos y técnicas de prueba (T33). Cada prueba se etiqueta para poder ejecutarlas por tipo:
+#   python -m pytest -m humo      |  python -m pytest -m "seguridad or interfaz"
+markers = [
+    "unitaria: prueba de una función aislada",
+    "componente: prueba de un módulo completo a través de su interfaz pública",
+    "integracion: prueba de varios módulos trabajando juntos",
+    "sistema: prueba del producto completo de punta a punta",
+    "aceptacion: criterio de aceptación del usuario (Dado/Cuando/Entonces)",
+    "humo: verificación rápida de que lo esencial funciona",
+    "interfaz: contrato de la API, la CLI o la interfaz gráfica",
+    "funcional: comportamiento esperado (particiones de equivalencia y valores límite)",
+    "no_funcional: rendimiento y tiempos de respuesta",
+    "exploratoria: exploración automática de entradas (pruebas basadas en propiedades)",
+    "usabilidad: la interfaz gráfica guía al usuario y responde",
+    "seguridad: controles de seguridad de la API y del cliente del hipervisor",
+    "hipervisor: requiere Proxmox VE real (variables PVE_*); se omite si no están",
+]
 
 [tool.ruff]
 # Versión mínima de Python que soporta el código (usa tomllib y "str | None").

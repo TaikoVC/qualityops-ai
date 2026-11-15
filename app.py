@@ -1,6 +1,9 @@
-"""Dashboard de QualityOps AI (T18). Ejecutar con:  streamlit run app.py
+"""Dashboard de QualityOps AI (T18, ampliado en T34). Ejecutar con doble clic en QualityOps.bat
+o con:  streamlit run app.py
 
-Solo MUESTRA lo que generó el pipeline (python -m qualityops, quality_gate y report).
+Las 6 primeras pestañas MUESTRAN lo que generó el pipeline (python -m qualityops, quality_gate
+y report). Las 3 nuevas (Centro de pruebas, Seguridad, Hipervisor) además EJECUTAN las
+pruebas con un botón, sin recordar comandos.
 La carpeta de reportes se puede cambiar con la variable QUALITYOPS_REPORTS.
 """
 
@@ -16,6 +19,7 @@ from qualityops.dashboard import (
     tabla_estimacion,
 )
 from qualityops.report import estado_llm
+from qualityops.vistas import vista_centro_pruebas, vista_hipervisor, vista_seguridad
 
 CARPETA = Path(os.environ.get("QUALITYOPS_REPORTS", "reports"))
 MATRIZ = Path(os.environ.get("QUALITYOPS_MATRIZ", "docs/MATRIZ_CUMPLIMIENTO.md"))
@@ -26,12 +30,25 @@ st.title("QualityOps AI — Dashboard de calidad")
 datos = cargar_reportes(CARPETA)
 m, gate, ia = datos["metrics"], datos["gate"], datos["ai_analysis"]
 if m is None:
-    st.warning("No hay reports/metrics.json. Ejecuta primero:  python -m qualityops --repo . --salida reports")
-    st.stop()
+    st.warning("No hay reports/metrics.json. Ejecuta primero:  python -m qualityops --repo . --salida reports  "
+               "(las pestañas Centro de pruebas, Seguridad e Hipervisor funcionan sin él).")
+else:
+    st.caption(f"Repositorio {m['repo']} · commit {m['commit']} · generado {m['generado']}")
 
-st.caption(f"Repositorio {m['repo']} · commit {m['commit']} · generado {m['generado']}")
-resumen, producto, proceso, proyecto, estimacion, tab_ia = st.tabs(
-    ["Resumen y cumplimiento", "Producto", "Proceso", "Proyecto", "Estimación", "AI Advisor"])
+(resumen, producto, proceso, proyecto, estimacion, tab_ia,
+ tab_pruebas, tab_seguridad, tab_hipervisor) = st.tabs(
+    ["Resumen y cumplimiento", "Producto", "Proceso", "Proyecto", "Estimación", "AI Advisor",
+     "🧪 Centro de pruebas", "🛡️ Seguridad", "🖥️ Hipervisor"])
+
+with tab_pruebas:
+    vista_centro_pruebas(CARPETA)
+with tab_seguridad:
+    vista_seguridad(CARPETA)
+with tab_hipervisor:
+    vista_hipervisor(CARPETA)
+
+if m is None:
+    st.stop()
 
 with resumen:
     if gate:

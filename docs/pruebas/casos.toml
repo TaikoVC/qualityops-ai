@@ -1,0 +1,502 @@
+# Catálogo de casos de prueba de QualityOps AI (T34).
+# Componentes de cada caso: identificador, tipo, técnica, descripción, datos de entrada,
+# pasos de ejecución, resultado esperado y resultado obtenido.
+#  - Casos automáticos: el resultado obtenido lo llena el Centro de pruebas al ejecutar pytest
+#    (la prueba se llama test_<id en minúsculas>..., o la indicada en `prueba`).
+#  - Casos manuales: `obtenido`, `estado` y `evidencia` se escriben después de ejecutarlos.
+
+# ---------------------------------------------------------------- Pruebas manuales
+[[caso]]
+id = "CP-MAN-01"
+tipo = "unitaria"
+tecnica = "funcional (valor límite)"
+modo = "manual"
+descripcion = "Evaluar a mano la función evaluar() del gate con una complejidad de 11"
+entrada = "pruebas 58/58, cobertura 88.79, complejidad máxima 11, umbrales por defecto (75 %, CC 10)"
+pasos = "1) python  2) from qualityops.quality_gate import evaluar, UMBRALES_POR_DEFECTO  3) llamar evaluar() con la entrada  4) leer 'aprobado' y los criterios"
+esperado = "aprobado = False; solo el criterio de complejidad en False"
+obtenido = "Pendiente de ejecutar"
+estado = "pendiente"
+evidencia = "evidence/E33a_manual_unitaria.png"
+
+[[caso]]
+id = "CP-MAN-02"
+tipo = "integracion"
+tecnica = "interfaz (API)"
+modo = "manual"
+descripcion = "Integrar la CLI local con la API del contenedor: enviar las métricas reales y comparar dictámenes"
+entrada = "reports/metrics.json generado en la laptop; API en http://192.168.56.20:8000"
+pasos = "1) python -m qualityops.quality_gate  2) Invoke-RestMethod POST /gate con pruebas, cobertura y CC de metrics.json  3) comparar los dos dictámenes"
+esperado = "El dictamen de la API en el contenedor es igual al del gate local"
+obtenido = "Pendiente de ejecutar"
+estado = "pendiente"
+evidencia = "evidence/E33b_manual_integracion.png"
+
+[[caso]]
+id = "CP-MAN-03"
+tipo = "sistema"
+tecnica = "humo + interfaz gráfica"
+modo = "manual"
+descripcion = "Abrir la aplicación con doble clic y ejecutar todas las pruebas desde el Centro de pruebas"
+entrada = "QualityOps.bat; botón 'Ejecutar' con el tipo 'todas'"
+pasos = "1) doble clic en QualityOps.bat  2) pestaña Centro de pruebas  3) elegir 'todas' y ejecutar  4) revisar el resumen y la tabla de casos"
+esperado = "La aplicación abre sin comandos; 0 fallidas; los casos automáticos muestran su resultado obtenido"
+obtenido = "Pendiente de ejecutar"
+estado = "pendiente"
+evidencia = "evidence/E33c_manual_sistema.png"
+
+[[caso]]
+id = "CP-MAN-04"
+tipo = "aceptacion"
+tecnica = "criterios de aceptación"
+modo = "manual"
+descripcion = "El usuario verifica desde la interfaz que el hipervisor, el servicio y la seguridad cumplen"
+entrada = "VM de Proxmox encendida; pestañas Hipervisor y Seguridad del dashboard"
+pasos = "1) pestaña Hipervisor -> Verificar comunicación  2) pestaña Seguridad -> Escanear  3) comparar con los criterios: todo en OK y gate de seguridad APROBADO"
+esperado = "Las 7 verificaciones de hiperconvergencia en OK y gate de seguridad APROBADO"
+obtenido = "Pendiente de ejecutar"
+estado = "pendiente"
+evidencia = "evidence/E33d_manual_aceptacion.png"
+
+[[caso]]
+id = "CP-MAN-05"
+tipo = "exploratoria"
+tecnica = "sesión exploratoria con guía (charter)"
+modo = "manual"
+descripcion = "Explorar la API del contenedor desde /docs con entradas raras: negativos, textos, campos faltantes, umbral 0"
+entrada = "http://192.168.56.20:8000/docs (Swagger UI)"
+pasos = "1) abrir /docs  2) POST /gate con cobertura -5, 'abc', sin 'pruebas' y umbral complejidad 0  3) anotar respuestas"
+esperado = "Toda entrada inválida responde 422 con un mensaje claro y sin trazas internas"
+obtenido = "Pendiente de ejecutar"
+estado = "pendiente"
+evidencia = "evidence/E33e_manual_exploratoria.png"
+
+# ---------------------------------------------------------------- Unitarias (existentes)
+[[caso]]
+id = "CP-UNI-01"
+tipo = "unitaria"
+tecnica = "funcional"
+modo = "automatico"
+prueba = "test_bloquea_por_complejidad_alta"
+descripcion = "El gate bloquea cuando la complejidad supera el umbral"
+entrada = "métricas con complejidad máxima mayor que 10"
+pasos = "evaluar(metricas, umbrales)"
+esperado = "aprobado = False"
+
+[[caso]]
+id = "CP-UNI-02"
+tipo = "unitaria"
+tecnica = "funcional"
+modo = "automatico"
+prueba = "test_tres_puntos_pert"
+descripcion = "La estimación de tres puntos (PERT) calcula (O + 4M + P) / 6"
+entrada = "tareas con optimista, más probable y pesimista"
+pasos = "tres_puntos(tareas)"
+esperado = "horas y desviación estándar exactas"
+
+[[caso]]
+id = "CP-UNI-03"
+tipo = "unitaria"
+tecnica = "funcional"
+modo = "automatico"
+prueba = "test_defecto_escapado_a_produccion"
+descripcion = "La minería SZZ marca como 'producción' un defecto que llegó a una versión etiquetada"
+entrada = "repositorio de prueba con tag vX.Y.Z y un fix posterior"
+pasos = "minar_defectos(repo)"
+esperado = "fase = produccion"
+
+[[caso]]
+id = "CP-HV-01"
+tipo = "unitaria"
+tecnica = "funcional"
+modo = "automatico"
+descripcion = "Extraer la IP del contenedor del formato net0 de Proxmox"
+entrada = "net0 = 'name=eth0,bridge=vmbr0,ip=192.168.56.20/24,...'"
+pasos = "ip_de_config(config)"
+esperado = "192.168.56.20; None si es dhcp o no hay net0"
+
+# ---------------------------------------------------------------- Componentes
+[[caso]]
+id = "CP-API-01"
+tipo = "componente"
+tecnica = "humo"
+modo = "automatico"
+descripcion = "GET /salud responde 200 con estado ok y el nombre del equipo"
+entrada = "GET /salud"
+pasos = "TestClient(app).get('/salud')"
+esperado = "200, estado = ok, host no vacío"
+
+[[caso]]
+id = "CP-HV-02"
+tipo = "componente"
+tecnica = "funcional"
+modo = "automatico"
+descripcion = "Verificación de hiperconvergencia completa contra un Proxmox simulado"
+entrada = "API de Proxmox simulada (httpx.MockTransport) y servicio simulado"
+pasos = "verificar_hiperconvergencia(cliente, cliente_http=servicio)"
+esperado = "7 verificaciones en OK e IP 192.168.56.20"
+
+[[caso]]
+id = "CP-HV-04"
+tipo = "componente"
+tecnica = "funcional (caso negativo)"
+modo = "automatico"
+descripcion = "Si en la IP responde otra máquina, la comunicación se marca como falla"
+entrada = "servicio simulado que responde host = otra-maquina"
+pasos = "verificar_hiperconvergencia(...)"
+esperado = "ok = False; la verificación 'Comunicación' en falla"
+
+[[caso]]
+id = "CP-HV-05"
+tipo = "componente"
+tecnica = "funcional (caso negativo)"
+modo = "automatico"
+descripcion = "Con el contenedor detenido, estado y servicio se reportan en falla sin excepción"
+entrada = "contenedor con status = stopped"
+pasos = "verificar_hiperconvergencia(...)"
+esperado = "'Contenedor en ejecución' y 'Servicio' en False"
+
+# ---------------------------------------------------------------- Integración
+[[caso]]
+id = "CP-HV-06"
+tipo = "integracion"
+tecnica = "funcional"
+modo = "automatico"
+descripcion = "Ciclo de vida: detener el contenedor por API tumba el servicio; iniciarlo lo recupera"
+entrada = "POST status/stop y status/start (simulados)"
+pasos = "prueba_ciclo_de_vida(cliente, 'pve', 200, 8000)"
+esperado = "ok = True y las dos llamadas POST en ese orden"
+
+[[caso]]
+id = "CP-HV-10"
+tipo = "integracion"
+tecnica = "seguridad (TLS)"
+modo = "automatico"
+descripcion = "La API REAL de Proxmox responde por HTTPS validando el certificado con la CA del nodo"
+entrada = "PVE_URL, PVE_TOKEN_ID, PVE_TOKEN_SECRET, PVE_CA"
+pasos = "python -m pytest -m hipervisor"
+esperado = "versión 9.x"
+
+[[caso]]
+id = "CP-HV-11"
+tipo = "integracion"
+tecnica = "funcional"
+modo = "automatico"
+descripcion = "Pilares de la hiperconvergencia en el Proxmox real: nodo, almacenamiento y contenedor"
+entrada = "nodo pve, contenedor 200"
+pasos = "consultas GET /nodes, /storage, /lxc/200/status/current"
+esperado = "nodo online, al menos un almacenamiento activo, contenedor running"
+
+# ---------------------------------------------------------------- Sistema
+[[caso]]
+id = "CP-SIS-01"
+tipo = "sistema"
+tecnica = "funcional de punta a punta"
+modo = "automatico"
+descripcion = "Pipeline completo sobre un proyecto real: métricas -> gate -> informe"
+entrada = "proyecto Python con Git creado en una carpeta temporal"
+pasos = "cli.main -> quality_gate.main -> report.main"
+esperado = "gate 0 y los 4 archivos de resultados; informe de 12 secciones"
+
+[[caso]]
+id = "CP-HV-12"
+tipo = "sistema"
+tecnica = "prueba de servicio"
+modo = "automatico"
+descripcion = "La API de QualityOps responde dentro del contenedor de Proxmox"
+entrada = "IP del contenedor obtenida de la API de Proxmox"
+pasos = "GET http://<ip>:8000/salud"
+esperado = "200 y estado = ok"
+
+[[caso]]
+id = "CP-HV-13"
+tipo = "sistema"
+tecnica = "prueba de servicio"
+modo = "automatico"
+descripcion = "El gate remoto (contenedor) da el mismo dictamen que el local para CC 11"
+entrada = "pruebas 58/58, cobertura 88.79, complejidad 11"
+pasos = "POST http://<ip>:8000/gate"
+esperado = "BLOQUEADO"
+
+# ---------------------------------------------------------------- Aceptación
+[[caso]]
+id = "CP-ACE-01"
+tipo = "aceptacion"
+tecnica = "Dado / Cuando / Entonces"
+modo = "automatico"
+descripcion = "Dado un cambio con una función de CC 11, cuando corre el pipeline, entonces se bloquea"
+entrada = "proyecto con app/reglas.py de CC 11"
+pasos = "pipeline completo"
+esperado = "gate 1 e informe NO LIBERAR"
+
+[[caso]]
+id = "CP-ACE-02"
+tipo = "aceptacion"
+tecnica = "Dado / Cuando / Entonces"
+modo = "automatico"
+descripcion = "Dado un umbral propio (CC 16) en el pyproject del proyecto, el mismo cambio se aprueba"
+entrada = "pyproject.toml con complejidad_maxima = 16"
+pasos = "pipeline completo"
+esperado = "gate 0"
+
+[[caso]]
+id = "CP-ACE-03"
+tipo = "aceptacion"
+tecnica = "Dado / Cuando / Entonces"
+modo = "automatico"
+descripcion = "Sin llave de IA, el informe se genera igual con la interpretación por reglas"
+entrada = "sin GEMINI_API_KEY"
+pasos = "pipeline completo"
+esperado = "fuente = reglas y dictamen en el informe"
+
+[[caso]]
+id = "CP-HV-14"
+tipo = "aceptacion"
+tecnica = "Dado / Cuando / Entonces"
+modo = "automatico"
+descripcion = "Dado Proxmox y el contenedor, la verificación de HCI está en OK y el hostname coincide"
+entrada = "Proxmox real"
+pasos = "verificar_hiperconvergencia(pve)"
+esperado = "ok = True"
+
+# ---------------------------------------------------------------- Técnicas
+[[caso]]
+id = "CP-FUN-01"
+tipo = "funcional"
+tecnica = "valores límite"
+modo = "automatico"
+descripcion = "Límite de cobertura en 75 %"
+entrada = "74.99, 75.0, 75.01, 0, 100, None"
+pasos = "evaluar() por cada valor"
+esperado = "solo >= 75 aprueba; None no aprueba"
+
+[[caso]]
+id = "CP-FUN-02"
+tipo = "funcional"
+tecnica = "valores límite"
+modo = "automatico"
+descripcion = "Límite de complejidad en 10"
+entrada = "1, 9, 10, 11, None"
+pasos = "evaluar() por cada valor"
+esperado = "solo <= 10 aprueba"
+
+[[caso]]
+id = "CP-FUN-03"
+tipo = "funcional"
+tecnica = "particiones de equivalencia"
+modo = "automatico"
+descripcion = "Criterio de pruebas: con pruebas sin fallas / sin pruebas / con fallidas / con errores"
+entrada = "(58,0,0) (0,0,0) (58,1,0) (58,0,1)"
+pasos = "evaluar() por partición"
+esperado = "solo la primera partición aprueba"
+
+[[caso]]
+id = "CP-API-03"
+tipo = "funcional"
+tecnica = "funcional"
+modo = "automatico"
+descripcion = "La API aprueba las métricas documentadas de v1.0.1"
+entrada = "58/58, 88.79 %, CC 9"
+pasos = "POST /gate"
+esperado = "APROBADO"
+
+[[caso]]
+id = "CP-API-04"
+tipo = "funcional"
+tecnica = "funcional"
+modo = "automatico"
+descripcion = "La API bloquea CC 11 (el caso de la demo en vivo)"
+entrada = "58/58, 88.79 %, CC 11"
+pasos = "POST /gate"
+esperado = "BLOQUEADO; solo complejidad en falla"
+
+[[caso]]
+id = "CP-NF-01"
+tipo = "no_funcional"
+tecnica = "rendimiento"
+modo = "automatico"
+descripcion = "El gate evalúa en menos de 1 ms en promedio"
+entrada = "1 000 evaluaciones"
+pasos = "medir con time.perf_counter"
+esperado = "< 1 ms por evaluación"
+
+[[caso]]
+id = "CP-NF-02"
+tipo = "no_funcional"
+tecnica = "rendimiento (tiempo de respuesta)"
+modo = "automatico"
+descripcion = "La API responde POST /gate en menos de 100 ms (mediana de 50)"
+entrada = "50 peticiones"
+pasos = "TestClient + time.perf_counter"
+esperado = "mediana < 100 ms"
+
+[[caso]]
+id = "CP-HUMO-01"
+tipo = "humo"
+tecnica = "humo"
+modo = "automatico"
+descripcion = "Los módulos principales se importan sin errores"
+entrada = "cli, quality_gate, report, ai_advisor, api, hipervisor, seguridad"
+pasos = "importlib.import_module"
+esperado = "sin excepciones"
+
+[[caso]]
+id = "CP-HUMO-02"
+tipo = "humo"
+tecnica = "interfaz (CLI)"
+modo = "automatico"
+descripcion = "La CLI del gate responde a --help"
+entrada = "--help"
+pasos = "quality_gate.main(['--help'])"
+esperado = "código 0 y la opción --metricas en la ayuda"
+
+[[caso]]
+id = "CP-API-02"
+tipo = "interfaz"
+tecnica = "contrato de API"
+modo = "automatico"
+descripcion = "POST /gate respeta el contrato de respuesta"
+entrada = "métricas válidas"
+pasos = "POST /gate"
+esperado = "campos dictamen, aprobado, criterios, umbrales; JSON"
+
+[[caso]]
+id = "CP-API-06"
+tipo = "interfaz"
+tecnica = "contrato de API (caso negativo)"
+modo = "automatico"
+descripcion = "GET /metricas sin datos responde 404 con un mensaje que orienta"
+entrada = "carpeta de reportes vacía"
+pasos = "GET /metricas"
+esperado = "404 y la instrucción 'python -m qualityops'"
+
+[[caso]]
+id = "CP-EXP-01"
+tipo = "exploratoria"
+tecnica = "basada en propiedades (Hypothesis)"
+modo = "automatico"
+descripcion = "Para cualquier combinación de entradas, el dictamen es exactamente la regla"
+entrada = "300 combinaciones aleatorias de cobertura, CC y fallidas"
+pasos = "Hypothesis @given"
+esperado = "ningún contraejemplo"
+
+[[caso]]
+id = "CP-EXP-02"
+tipo = "exploratoria"
+tecnica = "basada en propiedades (monotonía)"
+modo = "automatico"
+descripcion = "Subir la cobertura nunca empeora el dictamen"
+entrada = "200 pares aleatorios"
+pasos = "Hypothesis @given"
+esperado = "ningún contraejemplo"
+
+[[caso]]
+id = "CP-USA-01"
+tipo = "usabilidad"
+tecnica = "heurística: visibilidad del estado"
+modo = "automatico"
+descripcion = "Sin reportes, el dashboard explica qué hacer en lugar de mostrar un error"
+entrada = "carpeta de reportes vacía"
+pasos = "AppTest.from_file('app.py').run()"
+esperado = "sin excepciones y un aviso con el comando a ejecutar"
+
+[[caso]]
+id = "CP-USA-02"
+tipo = "usabilidad"
+tecnica = "heurística: reconocer antes que recordar"
+modo = "automatico"
+descripcion = "Todas las funciones están en pestañas con nombre en español, sin recordar comandos"
+entrada = "reportes de ejemplo"
+pasos = "AppTest: leer las pestañas y los botones"
+esperado = "9 pestañas, incluidas Centro de pruebas, Seguridad e Hipervisor, y sus botones"
+
+[[caso]]
+id = "CP-USA-03"
+tipo = "usabilidad"
+tecnica = "eficiencia de uso (tiempo)"
+modo = "automatico"
+descripcion = "El dashboard se dibuja en menos de 5 segundos"
+entrada = "reportes de ejemplo"
+pasos = "AppTest.run() cronometrado"
+esperado = "< 5 s"
+
+# ---------------------------------------------------------------- Seguridad
+[[caso]]
+id = "CP-SEG-01"
+tipo = "seguridad"
+tecnica = "validación de entradas"
+modo = "automatico"
+descripcion = "Datos inválidos se rechazan con 422 sin mostrar trazas internas"
+entrada = "cobertura 150, 'noventa', falta 'pruebas', total -1"
+pasos = "POST /gate por cada entrada"
+esperado = "422 y sin 'Traceback' ni rutas internas"
+
+[[caso]]
+id = "CP-SEG-02"
+tipo = "seguridad"
+tecnica = "autenticación"
+modo = "automatico"
+descripcion = "Con token configurado, POST /gate exige X-API-Key correcto"
+entrada = "sin encabezado / token falso / token correcto"
+pasos = "POST /gate"
+esperado = "401 / 401 / 200"
+
+[[caso]]
+id = "CP-SEG-03"
+tipo = "seguridad"
+tecnica = "configuración segura"
+modo = "automatico"
+descripcion = "Todas las respuestas llevan encabezados de seguridad"
+entrada = "GET /salud, ruta inexistente, POST inválido"
+pasos = "revisar encabezados"
+esperado = "nosniff, DENY, no-store y no-referrer en todas"
+
+[[caso]]
+id = "CP-SEG-04"
+tipo = "seguridad"
+tecnica = "control de métodos"
+modo = "automatico"
+descripcion = "Los endpoints solo aceptan su método HTTP"
+entrada = "DELETE /gate, POST /salud"
+pasos = "enviar el método no permitido"
+esperado = "405"
+
+[[caso]]
+id = "CP-SEG-05"
+tipo = "seguridad"
+tecnica = "comunicación segura (TLS)"
+modo = "automatico"
+descripcion = "El cliente de Proxmox rechaza http:// y la falta de CA"
+entrada = "http://... / https sin PVE_CA"
+pasos = "crear ClienteProxmox"
+esperado = "ConfiguracionInsegura en ambos casos"
+
+[[caso]]
+id = "CP-HV-03"
+tipo = "seguridad"
+tecnica = "autenticación por token"
+modo = "automatico"
+descripcion = "Cada petición a Proxmox lleva el token de API, no usuario y contraseña"
+entrada = "token qa@pve!qualityops"
+pasos = "version()"
+esperado = "encabezado Authorization: PVEAPIToken=..."
+
+[[caso]]
+id = "CP-SEG-06"
+tipo = "seguridad"
+tecnica = "política del gate de seguridad"
+modo = "automatico"
+descripcion = "El gate de seguridad bloquea por hallazgo medio, dependencia vulnerable o secreto"
+entrada = "hallazgos simulados de cada tipo"
+pasos = "politica(codigo, dependencias, secretos)"
+esperado = "bloquea en cada caso; aprueba con solo hallazgos bajos"
+
+[[caso]]
+id = "CP-SEG-07"
+tipo = "seguridad"
+tecnica = "verificación de la IA"
+modo = "automatico"
+descripcion = "Se detectan identificadores (CVE, reglas) que la IA inventa"
+entrada = "texto de IA con un CVE que no está en los hallazgos"
+pasos = "ids_inventados(texto, resultado)"
+esperado = "devuelve el CVE inventado"
